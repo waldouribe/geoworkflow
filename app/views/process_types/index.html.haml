@@ -1,0 +1,27 @@
+%h1 Listing process_types
+
+%table.table
+  %thead
+    %tr
+      %th User
+      %th Name
+      %th Hashtag
+      %th Description
+      %th
+      %th
+      %th
+
+  %tbody
+    - @process_types.each do |process_type|
+      %tr
+        %td= process_type.user
+        %td= process_type.name
+        %td= process_type.hashtag
+        %td= process_type.description
+        %td= link_to 'Show', process_type
+        %td= link_to 'Edit', edit_process_type_path(process_type)
+        %td= link_to 'Destroy', process_type, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Process type', new_process_type_path

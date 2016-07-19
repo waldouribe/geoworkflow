@@ -1,0 +1,41 @@
+%h1 Listing tasks
+
+%table.table
+  %thead
+    %tr
+      %th Process Type
+      %th Process
+      %th User
+      %th Responsible user
+      %th Name
+      %th Description
+      %th Address
+      %th Latitude
+      %th Longitude
+      %th Starts at
+      %th Ends at
+      %th
+      %th
+      %th
+
+  %tbody
+    - @tasks.each do |task|
+      %tr
+        %td= task.process_type
+        %td= task.my_process
+        %td= task.user
+        %td= task.responsible_user
+        %td= task.name
+        %td= task.description
+        %td= task.address
+        %td= task.latitude
+        %td= task.longitude
+        %td= task.starts_at
+        %td= task.ends_at
+        %td= link_to 'Show', task
+        %td= link_to 'Edit', edit_task_path(task)
+        %td= link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Task', new_task_path

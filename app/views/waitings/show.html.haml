@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Task:
+  = @waiting.task
+%p
+  %b Waiting:
+  = @waiting.waiting
+
+= link_to 'Edit', edit_waiting_path(@waiting)
+\|
+= link_to 'Back', waitings_path

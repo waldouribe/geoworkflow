@@ -1,0 +1,36 @@
+%p#notice= notice
+
+%p
+  %b My process:
+  = @task.my_process
+%p
+  %b User:
+  = @task.user
+%p
+  %b Name:
+  = @task.name
+%p
+  %b Description:
+  = @task.description
+%p
+  %b Address:
+  = @task.address
+%p
+  %b Latitude:
+  = @task.latitude
+%p
+  %b Longitude:
+  = @task.longitude
+%p
+  %b Starts at:
+  = @task.starts_at
+%p
+  %b Ends at:
+  = @task.ends_at
+%p
+  %b Responsible user:
+  = @task.responsible_user
+
+= link_to 'Edit', edit_task_path(@task)
+\|
+= link_to 'Back', tasks_path

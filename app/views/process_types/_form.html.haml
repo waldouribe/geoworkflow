@@ -1,0 +1,11 @@
+= simple_form_for(@process_type) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.association :user
+    = f.input :name
+    = f.input :hashtag
+    = f.input :description
+
+  .form-actions
+    = f.button :submit

@@ -1,0 +1,23 @@
+%h1 Listing waitings
+
+%table.table
+  %thead
+    %tr
+      %th Task
+      %th Waiting
+      %th
+      %th
+      %th
+
+  %tbody
+    - @waitings.each do |waiting|
+      %tr
+        %td= waiting.task
+        %td= waiting.waiting
+        %td= link_to 'Show', waiting
+        %td= link_to 'Edit', edit_waiting_path(waiting)
+        %td= link_to 'Destroy', waiting, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Waiting', new_waiting_path

@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Process type:
+  = @my_process.process_type
+%p
+  %b User:
+  = @my_process.user
+%p
+  %b Address:
+  = @my_process.address
+%p
+  %b Latitude:
+  = @my_process.latitude
+%p
+  %b Longitude:
+  = @my_process.longitude
+%p
+  %b Starts at:
+  = @my_process.starts_at
+= render 'google_maps/map'
+= link_to 'Edit', edit_my_process_path(@my_process)
+\|
+= link_to 'Back', my_processes_path

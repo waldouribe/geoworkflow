@@ -1,0 +1,13 @@
+= simple_form_for(@my_process) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.association :process_type
+    = f.association :user
+    = f.input :address
+    = f.input :latitude
+    = f.input :longitude
+    = f.input :starts_at
+
+  .form-actions
+    = f.button :submit

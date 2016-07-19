@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b User:
+  = @process_type.user
+%p
+  %b Name:
+  = @process_type.name
+%p
+  %b Hashtag:
+  = @process_type.hashtag
+%p
+  %b Description:
+  = @process_type.description
+
+= link_to 'Edit', edit_process_type_path(@process_type)
+\|
+= link_to 'Back', process_types_path

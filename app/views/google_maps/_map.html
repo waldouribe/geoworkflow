@@ -1,0 +1,27 @@
+<!-- https://console.cloud.google.com/apis/credentials?project=banded-lexicon-137220 -->
+<style>
+  .map_canvas {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+</style>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTINqFDyQqPfmOTa_AX_UsgX21dM7uFjU&callback=initMap"></script>
+<script>
+  var map;
+  function initialize() {
+    var mapOptions = {
+      zoom: 14,
+      center: new google.maps.LatLng(<%= @my_process.latitude %>, <%= @my_process.longitude %>),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('map_canvas'),
+        mapOptions);
+    var marker = new google.maps.Marker({    
+        position: new google.maps.LatLng(<%= @my_process.latitude %>, <%= @my_process.longitude %>),    
+        map: map    
+      }); 
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+<div id="map_canvas" class="map_canvas"></div>

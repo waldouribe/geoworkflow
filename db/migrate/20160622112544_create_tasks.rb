@@ -5,6 +5,8 @@ class CreateTasks < ActiveRecord::Migration
       t.references :user, index: true, foreign_key: true
       t.references :responsible_user, index: true, foreign_key: true
       t.string :address
+      t.string :name
+      t.text :description
       t.float :latitude
       t.float :longitude
       t.datetime :starts_at

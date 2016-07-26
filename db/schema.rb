@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160713134255) do
+ActiveRecord::Schema.define(version: 20160706122649) do
 
   create_table "messages", force: :cascade do |t|
     t.integer  "sender_id"
@@ -57,14 +57,14 @@ ActiveRecord::Schema.define(version: 20160713134255) do
     t.integer  "user_id"
     t.integer  "responsible_user_id"
     t.string   "address"
+    t.string   "name"
+    t.text     "description"
     t.float    "latitude"
     t.float    "longitude"
     t.datetime "starts_at"
     t.datetime "ends_at"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.text     "description"
-    t.string   "name"
   end
 
   add_index "tasks", ["my_process_id"], name: "index_tasks_on_my_process_id"

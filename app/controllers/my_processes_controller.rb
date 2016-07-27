@@ -4,12 +4,13 @@ class MyProcessesController < ApplicationController
   # GET /my_processes
   # GET /my_processes.json
   def index
-    @my_processes = MyProcess.all
+    @my_processes = MyProcess.where(user: current_user)
   end
 
   # GET /my_processes/1
   # GET /my_processes/1.json
   def show
+    @my_processes = MyProcess.where(user: current_user)
   end
 
   # GET /my_processes/new
@@ -25,6 +26,7 @@ class MyProcessesController < ApplicationController
   # POST /my_processes.json
   def create
     @my_process = MyProcess.new(my_process_params)
+    @my_process.user = @my_process.process_type.user
 
     respond_to do |format|
       if @my_process.save

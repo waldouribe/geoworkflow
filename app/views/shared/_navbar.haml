@@ -29,11 +29,9 @@
               %span.caret
             %ul.dropdown-menu
               %li
-                = link_to 'Perfil', current_user
-              %li
-                = link_to 'Cerrar sesión', destroy_user_session_path, method: :delete
+                = link_to 'Logout', destroy_user_session_path, method: :delete
         - else
           %li
-            = link_to 'Registro', new_user_registration_path
+            = link_to 'Sign-up', new_user_registration_path
           %li
-            = link_to 'Iniciar sesión', new_user_session_path
+            = link_to 'Login', new_user_session_path

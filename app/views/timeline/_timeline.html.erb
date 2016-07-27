@@ -1,0 +1,25 @@
+<!-- http://visjs.org/docs/timeline/ -->
+<div id="visualization"></div>
+
+<script type="text/javascript">
+  dataSet = []
+  <% timeline.each do |point| %>
+    dataSet.push({
+      id: <%= point[:id] %>,
+      start: new Date(<%= point[:start].year %>, <%= point[:start].month %>, <%= point[:start].day %>, <%= point[:start].hour %>, <%= point[:start].min %>),
+      end: new Date(<%= point[:end].year %>, <%= point[:end].month %>, <%= point[:end].day %>, <%= point[:end].hour %>, <%= point[:end].min %>),
+      content: "<%= point[:content] %>",
+    })
+  <% end %>
+  // DOM element where the Timeline will be attached
+  var container = document.getElementById('visualization');
+
+  // Create a DataSet (allows two way data-binding)
+  var items = new vis.DataSet(dataSet);
+
+  // Configuration for the Timeline
+  var options = {};
+
+  // Create a Timeline
+  var timeline = new vis.Timeline(container, items, options);
+</script>

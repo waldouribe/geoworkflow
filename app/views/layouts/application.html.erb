@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Geoworkflow</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-<div class='container'>
-  <%= render 'shared/navbar' %>
-  <%= yield %>
-</div>
-</body>
+  <html>
+    <head>
+      <title>Geoworkflow</title>
+      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+      <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+      <%= csrf_meta_tags %>
+    </head>
+
+    <body>
+      <div class='container'>
+        <%= render 'shared/navbar' %>
+        <%= yield %>
+      </div>
+    </body>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQLHznYx6UKpxcAAsWKXc2vMyL_TRRV6g&callback=initMap"
+    async defer></script>
 </html>

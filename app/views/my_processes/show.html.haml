@@ -1,24 +1,45 @@
-%p#notice= notice
-
-%p
-  %b Process type:
-  = @my_process.process_type
-%p
-  %b User:
-  = @my_process.user
-%p
-  %b Address:
-  = @my_process.address
-%p
-  %b Latitude:
-  = @my_process.latitude
-%p
-  %b Longitude:
-  = @my_process.longitude
-%p
-  %b Starts at:
-  = @my_process.starts_at
-= render 'google_maps/map'
-= link_to 'Edit', edit_my_process_path(@my_process)
-\|
-= link_to 'Back', my_processes_path
+.row
+  .col-sm-4
+    .list-group
+      - @my_processes.each do |my_process|
+        = link_to my_process, class: "list-group-item #{'active' if my_process == @my_process}" do
+          = my_process.process_type.name
+          %br
+          %small
+            = my_process.user
+            %br
+            %span= my_process.address
+            %span= " | " 
+            %span= datetime my_process.starts_at
+  .col-sm-8
+    = link_to 'Edit', edit_my_process_path(@my_process), class: 'pull-right'
+    %p
+      %b Process type:
+      = @my_process.process_type
+    %p
+      %b Address:
+      = @my_process.address
+    %p
+      %b Starts at:
+      = datetime @my_process.starts_at
+    %h2 Tasks timeline
+    = render 'timeline/timeline', timeline: @my_process.tasks_timeline
+    %h2 Task locations
+    - if @my_process.tasks_locations.any?
+      = render 'google_maps/map', locations: @my_process.tasks_locations, center: @my_process.tasks_center
+    %h2 Tasks
+    - if @my_process.tasks.order("starts_at ASC").any?
+      %table.table
+        %tr
+          %th ID
+          %th Starts at
+          %th Ends at
+          %th Name
+          %th Responsible
+        - @my_process.tasks.each do |task|
+          %tr
+            %td= task.id
+            %td= datetime task.starts_at
+            %td= datetime task.ends_at
+            %td= task.name
+            %td= task.responsible_user

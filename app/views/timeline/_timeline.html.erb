@@ -6,8 +6,8 @@
   <% timeline.each do |point| %>
     dataSet.push({
       id: <%= point[:id] %>,
-      start: new Date(<%= point[:start].year %>, <%= point[:start].month %>, <%= point[:start].day %>, <%= point[:start].hour %>, <%= point[:start].min %>),
-      end: new Date(<%= point[:end].year %>, <%= point[:end].month %>, <%= point[:end].day %>, <%= point[:end].hour %>, <%= point[:end].min %>),
+      start: new Date(<%= point[:start].year %>, <%= (point[:start]-1.month).month %>, <%= point[:start].day %>, <%= point[:start].hour %>, <%= point[:start].min %>),
+      end: new Date(<%= point[:end].year %>, <%= (point[:end]-1.month).month %>, <%= point[:end].day %>, <%= point[:end].hour %>, <%= point[:end].min %>),
       content: "<%= point[:content] %>",
     })
   <% end %>

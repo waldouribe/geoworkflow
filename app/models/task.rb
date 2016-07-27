@@ -13,6 +13,8 @@ class Task < ActiveRecord::Base
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
 
+  validates :address, :name, :user, :my_process, :responsible_user, presence: true
+
   def to_s
     return description.first(100)
   end

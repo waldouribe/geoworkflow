@@ -4,13 +4,18 @@ class MyProcessesController < ApplicationController
   # GET /my_processes
   # GET /my_processes.json
   def index
-    @my_processes = MyProcess.where(user: current_user)
+    my_processes = MyProcess.where(user: current_user).order("created_at DESC")
+    if my_processes.any?
+      redirect_to my_processes.first
+    else
+      render text: 'There are no processes for you'
+    end
   end
 
   # GET /my_processes/1
   # GET /my_processes/1.json
   def show
-    @my_processes = MyProcess.where(user: current_user)
+    @my_processes = MyProcess.where(user: current_user).order("created_at DESC")
   end
 
   # GET /my_processes/new

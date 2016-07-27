@@ -24,7 +24,7 @@
       = datetime @my_process.starts_at
     %h2 Tasks timeline
     = render 'timeline/timeline', timeline: @my_process.tasks_timeline
-    %h2 Task locations
+    %h2 Tasks locations
     - if @my_process.tasks_locations.any?
       = render 'google_maps/map', locations: @my_process.tasks_locations, center: @my_process.tasks_center
     %h2 Tasks
@@ -32,14 +32,21 @@
       %table.table
         %tr
           %th ID
+          %th Name
           %th Starts at
           %th Ends at
-          %th Name
+          %th Address
           %th Responsible
+          %th 
+          %th 
         - @my_process.tasks.each do |task|
           %tr
             %td= task.id
+            %td= task.name
             %td= datetime task.starts_at
             %td= datetime task.ends_at
-            %td= task.name
+            %td= task.address
             %td= task.responsible_user
+            %td= link_to 'Edit', edit_task_path(task)
+            %td= link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }
+    = link_to '+ Add task', new_task_path(my_process_id: @my_process.id)

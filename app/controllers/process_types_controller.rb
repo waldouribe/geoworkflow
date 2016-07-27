@@ -1,30 +1,23 @@
 class ProcessTypesController < ApplicationController
   before_action :set_process_type, only: [:show, :edit, :update, :destroy]
 
-  # GET /process_types
-  # GET /process_types.json
   def index
     @process_types = ProcessType.all
   end
 
-  # GET /process_types/1
-  # GET /process_types/1.json
   def show
   end
 
-  # GET /process_types/new
   def new
     @process_type = ProcessType.new
   end
 
-  # GET /process_types/1/edit
   def edit
   end
 
-  # POST /process_types
-  # POST /process_types.json
   def create
     @process_type = ProcessType.new(process_type_params)
+    @process_type.user = current_user
 
     respond_to do |format|
       if @process_type.save
@@ -37,8 +30,6 @@ class ProcessTypesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /process_types/1
-  # PATCH/PUT /process_types/1.json
   def update
     respond_to do |format|
       if @process_type.update(process_type_params)
@@ -51,8 +42,6 @@ class ProcessTypesController < ApplicationController
     end
   end
 
-  # DELETE /process_types/1
-  # DELETE /process_types/1.json
   def destroy
     @process_type.destroy
     respond_to do |format|
@@ -62,12 +51,10 @@ class ProcessTypesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_process_type
       @process_type = ProcessType.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def process_type_params
       params.require(:process_type).permit(:user_id, :name, :hashtag, :description)
     end

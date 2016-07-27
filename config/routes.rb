@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :messages
   resources :waitings
-  root to: "landing#index"
+  root to: "my_processes#new"
   resources :tasks
   resources :my_processes
   resources :process_types

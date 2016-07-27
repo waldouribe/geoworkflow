@@ -1,5 +1,11 @@
-%h1 New my_process
+.center.center-text
+  %h1 Ask for something
 
-= render 'form'
+  = simple_form_for(@my_process) do |f|
+    .form-inputs
+      = f.association :process_type, label: 'What do you want?'
+      = f.input :address, label: 'Where?'
+      = f.input :starts_at, label: 'When?'
 
-= link_to 'Back', my_processes_path
+    .form-actions
+      = f.button :submit, 'Submit'

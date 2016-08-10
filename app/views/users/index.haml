@@ -3,9 +3,11 @@
 %table.table
   %thead
     %tr
-      %th Email
+      %th Name
+      %th Username
 
   %tbody
     - @users.each do |user|
       %tr
-        %td= user.email
+        %td= user.name
+        %td= "@#{user.username}"

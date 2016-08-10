@@ -1,0 +1,7 @@
+production:
+  key: P74gQiLZQWqNNA8s4WQas4UiP
+  secret: x8D9Za6X0RZaAIsVCkHBZpvj1zGpxxknSvxMp689c205IdNjO5
+
+development:
+  key: 8bxyWQbODxjrYZEpPRt3XCHYC
+  secret: bE3iQuikRcvHemP0ZQEf5eQNKkflQkebTrpdLRcRJBo16jzq0v

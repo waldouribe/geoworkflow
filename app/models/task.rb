@@ -22,4 +22,12 @@ class Task < ActiveRecord::Base
   def location
     return {lat: latitude, lng: longitude, title: address}
   end
+
+  def waitings_to_s
+    if waiting_for_tasks.any?
+      "[(#{waiting_for_tasks.pluck(:id).join(", ")}) -> #{self.id}]"
+    elsif tasks_waiting.any?
+      "[#{self.id}->(#{tasks_waiting.pluck(:id).join(", ")})]"
+    end
+  end
 end

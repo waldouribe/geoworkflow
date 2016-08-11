@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: "my_processes#new"
+  root to: "landing#index"
   get 'landing/index'
 
   devise_for :users
@@ -8,7 +8,11 @@ Rails.application.routes.draw do
   resources :messages
   resources :waitings
   resources :tasks
-  resources :my_processes
+  resources :my_processes do 
+    member do 
+      get :success
+    end
+  end
   resources :process_types
 
   # Omiauth for twitter

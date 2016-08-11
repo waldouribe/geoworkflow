@@ -1,35 +1,17 @@
-%h1 Listing my_processes
-
+%h1 Listing Processes
 %table.table
-  %thead
+  %tr
+    %th ID
+    %th Starts at
+    %th Process Type
+    %th Process
+    %th Location
+    %th Status
+  - @my_processes.each do |my_process|
     %tr
-      %th Asker
-      %th Process type
-      %th Provider
-      %th Address
-      %th Latitude
-      %th Longitude
-      %th Starts at
-      %th Created at
-      %th
-      %th
-      %th
-
-  %tbody
-    - @my_processes.each do |my_process|
-      %tr
-        %td= my_process.user
-        %td= my_process.process_type
-        %td= my_process.process_type.user
-        %td= my_process.address
-        %td= my_process.latitude
-        %td= my_process.longitude
-        %td= my_process.starts_at
-        %td= my_process.created_at
-        %td= link_to 'Show', my_process
-        %td= link_to 'Edit', edit_my_process_path(my_process)
-        %td= link_to 'Destroy', my_process, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New My process', new_my_process_path
+      %td= my_process.id
+      %td= my_process.starts_at.strftime("%Y/%m/%d %H:%M")
+      %td= "##{my_process.process_type.hashtag}"
+      %td= "##{my_process.hashtag}"
+      %td= my_process.address
+      %td= link_to "##{my_process.process_type.hashtag}", my_process.twitter_status_url, target: '_blank'

@@ -1,8 +1,6 @@
 = simple_form_for(@task) do |f|
-  = f.error_notification
-
   .form-inputs
-    = f.association :my_process
+    = f.association :my_process, as: 'hidden'
     = f.association :responsible_user
     = f.input :name
     = f.input :description

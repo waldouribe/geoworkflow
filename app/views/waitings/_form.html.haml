@@ -3,7 +3,7 @@
 
   .form-inputs
     = f.association :task
-    = f.association :waiting
+    = f.association :waiting, collection: @waitable_tasks
 
   .form-actions
     = f.button :submit

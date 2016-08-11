@@ -1,17 +1,20 @@
 class MyProcessesController < ApplicationController
-  before_action :set_my_process, only: [:show, :edit, :update, :destroy]
+  before_action :set_my_process, only: [:show, :edit, :update, :destroy, :success]
 
   def index
-    my_processes = MyProcess.joins(:process_type).where('process_types.user_id' => current_user.id).order("created_at DESC")
-    if my_processes.any?
-      redirect_to my_processes.first
+    @my_processes = MyProcess.visibles_for(current_user).order('created_at DESC')
+    if @my_processes.any? and current_user.role?(:admin)
+      redirect_to @my_processes.first
     else
-      render text: 'There are no processes for you'
+      render 'index'
     end
   end
 
+  def success
+  end
+
   def show
-    @my_processes = MyProcess.joins(:process_type).where('process_types.user_id' => current_user.id).order("created_at DESC")
+    @my_processes = MyProcess.visibles_for(current_user).order('created_at DESC')
   end
 
   def new
@@ -27,7 +30,7 @@ class MyProcessesController < ApplicationController
 
     respond_to do |format|
       if @my_process.save
-        format.html { redirect_to @my_process, notice: 'My process was successfully created.' }
+        format.html { redirect_to success_my_process_path(@my_process) }
         format.json { render :show, status: :created, location: @my_process }
       else
         format.html { render :new }

@@ -2,7 +2,7 @@ class ProcessTypesController < ApplicationController
   before_action :set_process_type, only: [:show, :edit, :update, :destroy]
 
   def index
-    @process_types = ProcessType.all
+    @process_types = ProcessType.where(user: current_user)
   end
 
   def show
@@ -56,6 +56,6 @@ class ProcessTypesController < ApplicationController
     end
 
     def process_type_params
-      params.require(:process_type).permit(:user_id, :name, :hashtag, :description)
+      params.require(:process_type).permit(:name, :hashtag, :description)
     end
 end

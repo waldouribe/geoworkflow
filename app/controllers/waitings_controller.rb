@@ -1,34 +1,29 @@
 class WaitingsController < ApplicationController
   before_action :set_waiting, only: [:show, :edit, :update, :destroy]
 
-  # GET /waitings
-  # GET /waitings.json
   def index
     @waitings = Waiting.all
   end
 
-  # GET /waitings/1
-  # GET /waitings/1.json
   def show
   end
 
-  # GET /waitings/new
   def new
-    @waiting = Waiting.new
+    @waiting = Waiting.new(task_id: params[:task_id])
+    task = @waiting.task
+    # TODO: Exclude tasks that are already being waited
+    @waitable_tasks = Task.where(my_process: task.my_process).where.not(id: task.id)
   end
 
-  # GET /waitings/1/edit
   def edit
   end
 
-  # POST /waitings
-  # POST /waitings.json
   def create
     @waiting = Waiting.new(waiting_params)
 
     respond_to do |format|
       if @waiting.save
-        format.html { redirect_to @waiting, notice: 'Waiting was successfully created.' }
+        format.html { redirect_to @waiting.task.my_process, notice: 'Waiting was successfully created.' }
         format.json { render :show, status: :created, location: @waiting }
       else
         format.html { render :new }
@@ -37,8 +32,6 @@ class WaitingsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /waitings/1
-  # PATCH/PUT /waitings/1.json
   def update
     respond_to do |format|
       if @waiting.update(waiting_params)
@@ -51,8 +44,6 @@ class WaitingsController < ApplicationController
     end
   end
 
-  # DELETE /waitings/1
-  # DELETE /waitings/1.json
   def destroy
     @waiting.destroy
     respond_to do |format|
@@ -62,12 +53,10 @@ class WaitingsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_waiting
       @waiting = Waiting.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def waiting_params
       params.require(:waiting).permit(:task_id, :waiting_id)
     end

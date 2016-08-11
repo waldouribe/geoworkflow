@@ -3,7 +3,7 @@
 
   .form-inputs
     = f.association :receiver
-    = f.association :my_process
+    = f.association :my_process, as: 'hidden'
     = f.input :message
 
   .form-actions

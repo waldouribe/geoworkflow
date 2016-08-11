@@ -1,13 +1,18 @@
-%h1 Usuarios
+%h1 Users
 
 %table.table
   %thead
     %tr
       %th Name
       %th Username
+      %th 
 
   %tbody
     - @users.each do |user|
       %tr
         %td= user.name
         %td= "@#{user.username}"
+        %td
+          = simple_form_for user do |f|
+            = f.input :role, collection: User.ROLES, include_blank: false, wrapper_html: {class: 'inline-block'}, label: false
+            = f.submit 'Change role', class: 'btn btn-xs btn-default inline-block'

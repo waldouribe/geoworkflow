@@ -25,6 +25,9 @@
     %p
       %b Starts at:
       = datetime @my_process.starts_at
+    %p
+      %b Twitter status:
+      = link_to "##{@my_process.hashtag}", @my_process.twitter_status_url, target: '_blank'
     %h2 Tasks timeline
     = render 'timeline/timeline', timeline: @my_process.tasks_timeline
     %h2 Tasks locations
@@ -42,6 +45,7 @@
           %th Responsible
           %th 
           %th 
+          %th 
         - @my_process.tasks.each do |task|
           %tr
             %td= task.id
@@ -50,6 +54,23 @@
             %td= datetime task.ends_at
             %td= task.address
             %td= task.responsible_user
+            %td= link_to '+ Wait for', new_waiting_path(task_id: task.id)
             %td= link_to 'Edit', edit_task_path(task)
             %td= link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }
     = link_to '+ Add task', new_task_path(my_process_id: @my_process.id)
+    %h2 Messages
+    %table.table
+      %thead
+        %tr
+          %th Created at
+          %th Sender
+          %th Receiver
+          %th Message
+      %tbody
+        - @my_process.messages.order('created_at ASC').each do |message|
+          %tr
+            %td= message.created_at.strftime("%Y/%m/%d %H:%m")
+            %td= message.sender
+            %td= message.receiver
+            %td= message.message
+    = link_to '+ Add message', new_message_path(my_process_id: @my_process.id)

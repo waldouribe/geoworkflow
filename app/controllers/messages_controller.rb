@@ -9,7 +9,7 @@ class MessagesController < ApplicationController
   end
 
   def new
-    @message = Message.new
+    @message = Message.new(my_process_id: params[:my_process_id])
   end
 
   def edit
@@ -21,7 +21,7 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.save
-        format.html { redirect_to @message, notice: 'Message was successfully created.' }
+        format.html { redirect_to @message.my_process, notice: 'Message was successfully created.' }
         format.json { render :show, status: :created, location: @message }
       else
         format.html { render :new }

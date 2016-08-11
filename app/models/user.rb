@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
+  cattr_reader :ROLES
+  @@ROLES = ['admin', 'member']
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable
+  devise :database_authenticatable, :registerable, :rememberable, :trackable
+  has_many :process_types, dependent: :destroy
 
   def to_s
     return "@#{username}"
@@ -16,6 +18,11 @@ class User < ActiveRecord::Base
     user.update_attributes(token: auth['credentials']['token'], secret: auth['credentials']['secret'])
 
     return user
+  end
+
+  def role?(role)
+    role = role.to_s.downcase
+    self.role == role
   end
 
   def self.create_from_omniauth(auth)

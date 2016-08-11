@@ -16,7 +16,7 @@ class MyProcess < ActiveRecord::Base
   def self.visibles_for(user)
     uid = user.id
     condition = "process_types.user_id = #{uid} OR my_processes.user_id = #{uid} OR tasks.user_id = #{uid} OR tasks.responsible_user_id = #{uid}"
-    MyProcess.joins(:process_type).joins("LEFT JOIN tasks").where(condition).uniq('my_processes.id')
+    MyProcess.joins(:process_type).joins("LEFT JOIN tasks").where(condition)
   end
 
   def to_s

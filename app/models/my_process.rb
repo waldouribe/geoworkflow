@@ -62,7 +62,7 @@ class MyProcess < ActiveRecord::Base
         sender: user, 
         receiver: process_type.user, 
         my_process: self,
-        message: "@#{process_type.user.username} solicito ##{hashtag} el día #{starts_at.day} de #{starts_at.strftime('%b')} a las #{starts_at.strftime("%H:%M")} en #{address}"[0..139],
+        message: "@#{process_type.user.username} quiero ##{hashtag} el día #{starts_at.day} de #{starts_at.strftime('%b')} a las #{starts_at.strftime("%H:%M")} en #{address}"[0..139],
         custom: true)
     end
 end

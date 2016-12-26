@@ -1,0 +1,16 @@
+!!!
+%html{lang: 'en'}
+  %head
+    %head>
+      %title Geoworkflow
+      = stylesheet_link_tag    'application'
+      = javascript_include_tag 'application'
+      = csrf_meta_tags
+  %body
+    = render 'shared/navbar'
+    - flash.each do |key, value|
+      %div{:class => "alert alert-#{key} fade in", "data-dismiss" => "alert"}
+        %button.close{"data-dismiss" => "alert"} &times;
+        %strong= value.html_safe
+    .container
+      = yield

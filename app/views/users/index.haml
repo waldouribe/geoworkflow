@@ -1,10 +1,10 @@
-%h1 Users
+%h1.center-text Users
 
-%table.table
+%table.table.mt-lg
   %thead
     %tr
-      %th Name
-      %th Username
+      %th NAME
+      %th USERNAME
       %th 
 
   %tbody
@@ -13,6 +13,7 @@
         %td= user.name
         %td= "@#{user.username}"
         %td
-          = simple_form_for user do |f|
-            = f.input :role, collection: User.ROLES, include_blank: false, wrapper_html: {class: 'inline-block'}, label: false
-            = f.submit 'Change role', class: 'btn btn-xs btn-default inline-block'
+          .pull-right
+            = simple_form_for user do |f|
+              = f.input :role, collection: User.ROLES, include_blank: false, wrapper_html: {class: 'inline-block'}, label: false
+              = f.submit 'Change role', class: 'btn btn-xs btn-default inline-block'

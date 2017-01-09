@@ -3,6 +3,8 @@ class CreateMyProcesses < ActiveRecord::Migration
     create_table :my_processes do |t|
       t.references :process_type, index: true, foreign_key: true
       t.references :user, index: true, foreign_key: true
+      t.string :name
+      t.string :hashtag
       t.string :address
       t.float :latitude
       t.float :longitude

@@ -13,7 +13,14 @@ class Task < ActiveRecord::Base
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
 
-  validates :address, :name, :user, :my_process, :responsible_user, presence: true
+  validates :name, presence: true
+
+  scope :sorted_by_current_start, -> { all.sort {|t1, t2| t1.current_start <=> t2.current_start} }
+
+  def relative_id
+    sorted = my_process.tasks.sort {|t1, t2| t1.current_start <=> t2.current_start}
+    sorted.map(&:id).index(self.id)+1
+  end
 
   def to_s
     return description.first(100)
@@ -24,10 +31,30 @@ class Task < ActiveRecord::Base
   end
 
   def waitings_to_s
+    # if waiting_for_tasks.any?
+    #   "[(#{waiting_for_tasks.pluck(:id).join(", ")}) -> #{self.id}]"
+    # elsif tasks_waiting.any?
+    #   "[#{self.id}->(#{tasks_waiting.pluck(:id).join(", ")})]"
+    # end
     if waiting_for_tasks.any?
-      "[(#{waiting_for_tasks.pluck(:id).join(", ")}) -> #{self.id}]"
-    elsif tasks_waiting.any?
-      "[#{self.id}->(#{tasks_waiting.pluck(:id).join(", ")})]"
+      relative_ids = waiting_for_tasks.map{ |task| task.relative_id }.join(", ")
+      " | waiting for: [#{relative_ids}]"
     end
+  end
+
+  def current_start
+    return assigned_start || created_at
+  end
+
+  def current_end
+    return assigned_end || created_at + 1.hour
+  end
+
+  def starts_at
+    return DateTime.now()
+  end
+
+  def ends_at
+    DateTime.now()+1.hour
   end
 end

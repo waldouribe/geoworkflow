@@ -1,0 +1,10 @@
+.row
+  .col-xs-12.col-sm-8.col-sm-offset-2
+    %h1.center-text= "Add tasks involved in #{@my_process.name}"
+    .mb-lg
+    = simple_form_for @my_process, url: create_tasks_my_process_path(@my_process) do |f|
+      .form-inputs
+        = link_to_add_fields '+ Add Task', f, :tasks, {class: 'btn btn-default btn-block mt-lg'}
+      %hr
+      .form-actions
+        = f.button :submit, 'Submit', class: 'btn btn-primary btn-block'

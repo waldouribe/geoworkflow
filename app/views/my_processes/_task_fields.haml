@@ -1,0 +1,10 @@
+.task-fields.fieldset
+  = link_to 'javascript:void(0);', class: 'remove-fieldset pull-right' do
+    Remove
+    %i.glyphicon.glyphicon-remove-circle
+  .clearfix.mb-md
+  .row
+    .col-xs-6
+      = f.input :name, label: 'Task Name'
+    .col-xs-6
+      = f.input :address, label: 'Task Location / Address'

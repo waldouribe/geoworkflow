@@ -10,26 +10,25 @@ class WaitingsController < ApplicationController
 
   def new
     @waiting = Waiting.new(task_id: params[:task_id])
-    task = @waiting.task
-    # TODO: Exclude tasks that are already being waited
-    @waitable_tasks = Task.where(my_process: task.my_process).where.not(id: task.id)
+    @task = @waiting.task
+    
+    excluded_tasks_ids = [@task.id]
+    excluded_tasks_ids += @task.waiting_for_tasks.pluck(:id).uniq
+    
+    @waitable_tasks = Task.where(my_process: @task.my_process).where.not(id: excluded_tasks_ids)
   end
 
   def edit
   end
 
   def create
-    @waiting = Waiting.new(waiting_params)
+    @waiting = Waiting.new waiting_params
 
-    respond_to do |format|
-      if @waiting.save
-        format.html { redirect_to @waiting.task.my_process, notice: 'Waiting was successfully created.' }
-        format.json { render :show, status: :created, location: @waiting }
-      else
-        format.html { render :new }
-        format.json { render json: @waiting.errors, status: :unprocessable_entity }
-      end
-    end
+    if @waiting.save
+      redirect_to @waiting.task.my_process
+    else
+      render :new
+    end    
   end
 
   def update

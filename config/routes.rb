@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   resources :my_processes do 
     member do 
       get :success
+      get :new_tasks
+      patch :create_tasks
     end
   end
   resources :process_types

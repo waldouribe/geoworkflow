@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(version: 20160802213729) do
   create_table "my_processes", force: :cascade do |t|
     t.integer  "process_type_id"
     t.integer  "user_id"
+    t.string   "name"
+    t.string   "hashtag"
     t.string   "address"
     t.float    "latitude"
     t.float    "longitude"
@@ -54,22 +56,22 @@ ActiveRecord::Schema.define(version: 20160802213729) do
 
   create_table "tasks", force: :cascade do |t|
     t.integer  "my_process_id"
-    t.integer  "user_id"
     t.integer  "responsible_user_id"
     t.string   "address"
     t.string   "name"
     t.text     "description"
     t.float    "latitude"
     t.float    "longitude"
-    t.datetime "starts_at"
-    t.datetime "ends_at"
+    t.datetime "assigned_start"
+    t.datetime "assigned_end"
+    t.datetime "actual_start"
+    t.datetime "actual_end"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
   end
 
   add_index "tasks", ["my_process_id"], name: "index_tasks_on_my_process_id"
   add_index "tasks", ["responsible_user_id"], name: "index_tasks_on_responsible_user_id"
-  add_index "tasks", ["user_id"], name: "index_tasks_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: ""

@@ -1,12 +1,14 @@
 = simple_form_for(@task) do |f|
   .form-inputs
+    .row
+      .col-xs-12.col-sm-6
+        = f.input :assigned_start, as: :datetime
+      .col-xs-12.col-sm-6
+        = f.input :assigned_end, as: :datetime
     = f.association :my_process, as: 'hidden'
     = f.association :responsible_user
     = f.input :name
     = f.input :description
     = f.input :address
-    = f.input :starts_at
-    = f.input :ends_at
-    
   .form-actions
     = f.button :submit

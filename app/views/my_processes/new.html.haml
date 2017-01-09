@@ -1,12 +1,11 @@
-.center
-  %h1 Ask for something
+.row
+  .col-xs-12.col-sm-8.col-sm-offset-2
+    %h1.center-text Create a new process
 
-  = simple_form_for(@my_process) do |f|
-    .form-inputs.mt-lg
-      = f.association :process_type, label: 'What do you want?', include_blank: false
-      = f.input :address, label: 'Where?'
-      = f.input :starts_at, label: 'When?'
-
-    %hr
-    .form-actions
-      = f.button :submit, 'Submit', class: 'btn btn-primary btn-block'
+    = simple_form_for(@my_process) do |f|
+      .form-inputs.mt-lg
+        = f.input :name, label: 'Name this process'
+        = f.input :hashtag, label: 'Give it a hashtag for identification'
+      %hr
+      .form-actions
+        = f.button :submit, 'Submit', class: 'btn btn-primary btn-block'

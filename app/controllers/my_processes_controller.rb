@@ -1,5 +1,5 @@
 class MyProcessesController < ApplicationController
-  before_action :set_my_process, only: [:show, :edit, :update, :destroy, :success]
+  before_action :set_my_process, only: [:create_tasks, :new_tasks, :show, :edit, :update, :destroy, :success]
 
   def index
     @my_processes = MyProcess.visibles_for(current_user).order('created_at DESC')
@@ -28,26 +28,27 @@ class MyProcessesController < ApplicationController
     @my_process = MyProcess.new(my_process_params)
     @my_process.user = current_user
 
-    respond_to do |format|
-      if @my_process.save
-        format.html { redirect_to success_my_process_path(@my_process) }
-        format.json { render :show, status: :created, location: @my_process }
-      else
-        format.html { render :new }
-        format.json { render json: @my_process.errors, status: :unprocessable_entity }
-      end
+    if @my_process.save
+      redirect_to new_tasks_my_process_path(@my_process)
+      #redirect_to success_my_process_path(@my_process)
+    else
+      render :new
     end
   end
 
+  def new_tasks
+  end
+
+  def create_tasks
+    @my_process.update(my_process_params)
+    redirect_to my_process_path(@my_process)
+  end
+
   def update
-    respond_to do |format|
-      if @my_process.update(my_process_params)
-        format.html { redirect_to @my_process, notice: 'My process was successfully updated.' }
-        format.json { render :show, status: :ok, location: @my_process }
-      else
-        format.html { render :edit }
-        format.json { render json: @my_process.errors, status: :unprocessable_entity }
-      end
+    if @my_process.update(my_process_params)
+      redirect_to @my_process, notice: 'My process was successfully updated.'
+    else
+      render :edit
     end
   end
 
@@ -65,6 +66,6 @@ class MyProcessesController < ApplicationController
     end
 
     def my_process_params
-      params.require(:my_process).permit(:process_type_id, :user_id, :address, :latitude, :longitude, :starts_at)
+      params.require(:my_process).permit(:name, :hashtag, tasks_attributes: [:id, :name, :address, :assigned_start, :assigned_end])
     end
 end

@@ -2,16 +2,14 @@
 %table.table
   %tr
     %th ID
-    %th Starts at
-    %th Process Type
     %th Process
+    %th Hashtag
     %th Location
     %th Status
   - @my_processes.each do |my_process|
     %tr
       %td= my_process.id
-      %td= my_process.starts_at.strftime("%Y/%m/%d %H:%M")
-      %td= "##{my_process.process_type.hashtag}"
+      %td= "##{my_process.name}"
       %td= "##{my_process.hashtag}"
       %td= my_process.address
-      %td= link_to "##{my_process.process_type.hashtag}", my_process.twitter_status_url, target: '_blank'
+      %td= link_to "##{my_process.hashtag}", my_process.twitter_status_url, target: '_blank'

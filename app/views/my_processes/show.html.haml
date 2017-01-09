@@ -3,61 +3,54 @@
     .list-group
       - @my_processes.each do |my_process|
         = link_to my_process, class: "list-group-item #{'active' if my_process == @my_process}" do
-          = my_process.process_type.name
+          = my_process.name
           %br
           %small
-            = my_process.user
-            %br
-            %span= my_process.address
-            %span= " | " 
-            %span= datetime my_process.starts_at
+            = "Created by: #{my_process.user}"            
   .col-sm-8
     = link_to 'Edit', edit_my_process_path(@my_process), class: 'pull-right'
-    %p
-      %b Process type:
-      = @my_process.process_type
-    %p
-      %b Requested by:
+    %h1.no-margin= @my_process.name
+    %p.mt-md
+      %b Created by:
       = @my_process.user
-    %p
-      %b Address:
-      = @my_process.address
-    %p
-      %b Starts at:
-      = datetime @my_process.starts_at
     %p
       %b Twitter status:
       = link_to "##{@my_process.hashtag}", @my_process.twitter_status_url, target: '_blank'
+    %h2 Tasks
+    - if @my_process.tasks.any?
+      %table.table
+        %tr
+          %th ID
+          %th Name
+          %th Responsible
+          %th Waiting for
+          %th 
+        - @my_process.tasks.sorted_by_current_start.each do |task|
+          %tr
+            %td= task.relative_id
+            %td= task.name
+            %td= task.responsible_user || '-'
+            %td
+              - task.waiting_for_tasks.each do |task|
+                %span.label.label-default.mr-sm
+                  = task.relative_id
+                  = link_to '#', class: 'white-link' do 
+                    %i.glyphicon.glyphicon-remove
+              = link_to '+ Wait for', new_waiting_path(task_id: task.id), class: 'btn btn-default btn-xxs'
+            %td
+              .pull-right
+                = link_to 'View details', task , class: 'btn btn-default btn-xs mr-md'
+                = link_to edit_task_path(task), class: 'btn btn-default btn-xs' do
+                  %i.glyphicon.glyphicon-pencil
+                = link_to task, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-default btn-xs' do
+                  %i.glyphicon.glyphicon-trash
+              .clearfix
+    = link_to '+ Add task', new_task_path(my_process_id: @my_process.id)
     %h2 Tasks timeline
     = render 'timeline/timeline', timeline: @my_process.tasks_timeline
     %h2 Tasks locations
     - if @my_process.tasks_locations.any?
       = render 'google_maps/map', locations: @my_process.tasks_locations, center: @my_process.tasks_center
-    %h2 Tasks
-    - if @my_process.tasks.order("starts_at ASC").any?
-      %table.table
-        %tr
-          %th ID
-          %th Name
-          %th Starts at
-          %th Ends at
-          %th Address
-          %th Responsible
-          %th 
-          %th 
-          %th 
-        - @my_process.tasks.each do |task|
-          %tr
-            %td= task.id
-            %td= task.name
-            %td= datetime task.starts_at
-            %td= datetime task.ends_at
-            %td= task.address
-            %td= task.responsible_user
-            %td= link_to '+ Wait for', new_waiting_path(task_id: task.id)
-            %td= link_to 'Edit', edit_task_path(task)
-            %td= link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }
-    = link_to '+ Add task', new_task_path(my_process_id: @my_process.id)
     %h2 Messages
     %table.table
       %thead

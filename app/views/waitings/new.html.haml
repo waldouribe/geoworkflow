@@ -1,5 +1,3 @@
-%h1 New waiting
-
-= render 'form'
-
-= link_to 'Back', waitings_path
+.center
+  %h1= "#{@task.name} must wait for"
+  = render 'form'

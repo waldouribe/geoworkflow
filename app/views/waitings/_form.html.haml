@@ -1,9 +1,8 @@
-= simple_form_for(@waiting) do |f|
-  = f.error_notification
-
+= simple_form_for @waiting do |f|
   .form-inputs
-    = f.association :task
-    = f.association :waiting, collection: @waitable_tasks
-
+    = f.association :task, as: :hidden
+    = f.association :waiting, collection: @waitable_tasks, include_blank: false, label: false, input_html: {class: 'block width-100'}
+  %hr
   .form-actions
-    = f.button :submit
+    = link_to 'Cancel', @task.my_process, class: 'btn btn-default'
+    = f.button :submit, class: 'btn btn-primary pull-right'

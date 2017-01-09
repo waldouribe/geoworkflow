@@ -17,16 +17,10 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
-    @task.user = current_user
-
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to @task.my_process, notice: 'Task was successfully created.' }
-        format.json { render :show, status: :created, location: @task }
-      else
-        format.html { render :new }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    if @task.save
+      redirect_to @task.my_process
+    else
+      render :new
     end
   end
 
@@ -57,6 +51,17 @@ class TasksController < ApplicationController
     end
 
     def task_params
-      params.require(:task).permit(:my_process_id, :user_id, :address, :latitude, :longitude, :starts_at, :ends_at, :responsible_user_id, :description, :name)
+      params.require(:task).permit(
+        :name,
+        :my_process_id, 
+        :user_id, 
+        :address, 
+        :latitude, 
+        :longitude, 
+        :assigned_start, 
+        :assigned_end, 
+        :responsible_user_id, 
+        :description
+      )
     end
 end

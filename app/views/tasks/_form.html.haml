@@ -1,14 +1,24 @@
 = simple_form_for(@task) do |f|
   .form-inputs
     .row
+      .col-xs-6
+        = f.input :name
+      .col-xs-6
+        = f.input :address
+    .row
       .col-xs-12.col-sm-6
         = f.input :assigned_start, as: :datetime
       .col-xs-12.col-sm-6
-        = f.input :assigned_end, as: :datetime
+        = f.input :assigned_end, as: :datetime, as: :datetime, start_date: @task.min_assigned_start, end_date: @task.max_assigned_end
     = f.association :my_process, as: 'hidden'
-    = f.association :responsible_user
-    = f.input :name
-    = f.input :description
-    = f.input :address
+    .row
+      .col-xs-12
+        = f.input :description, input_html: {class: 'width-100', style: 'height: 150px'}
+    = f.association :responsible_user, include_blank: '-- Select user --'
+  
+  %hr
+  
   .form-actions
-    = f.button :submit
+    = link_to 'Cancel', @task.my_process, class: 'btn btn-default'
+    = f.button :submit, class: 'btn btn-primary pull-right'
+    .clearfix

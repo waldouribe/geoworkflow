@@ -1,0 +1,21 @@
+<% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
+
+ready = ->
+  $('.destroy-waiting').click ->
+    waitingId = $(this).data('id')
+    url = "<%= waiting_path('replace_here') %>"
+    url = url.replace 'replace_here', waitingId
+
+    $.ajax({
+      method: 'DELETE',
+      url: url,
+      dataType: 'json'
+    }).done((response) ->
+      $("#waiting-#{waitingId}").remove()
+    ).fail((error) ->
+      console.debug error
+      return
+    )
+
+$(document).ready ready
+$(document).on 'page:load', ready

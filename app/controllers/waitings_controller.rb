@@ -13,7 +13,8 @@ class WaitingsController < ApplicationController
     @task = @waiting.task
     
     excluded_tasks_ids = [@task.id]
-    excluded_tasks_ids += @task.waiting_for_tasks.pluck(:id).uniq
+    excluded_tasks_ids += Task.waiting_for_tasks_ids(@task, [])
+    excluded_tasks_ids += Task.waiting_tasks_ids(@task, [])
     
     @waitable_tasks = Task.where(my_process: @task.my_process).where.not(id: excluded_tasks_ids)
   end
@@ -25,7 +26,7 @@ class WaitingsController < ApplicationController
     @waiting = Waiting.new waiting_params
 
     if @waiting.save
-      redirect_to @waiting.task.my_process
+      redirect_to my_process_path(@waiting.task.my_process, anchor: "task-#{@waiting.task.id}")
     else
       render :new
     end    

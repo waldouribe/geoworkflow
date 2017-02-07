@@ -3,3 +3,4 @@
 //= require bootstrap
 //= require vis.min
 //= require forms
+//= require waitings

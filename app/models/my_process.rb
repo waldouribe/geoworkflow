@@ -44,12 +44,11 @@ class MyProcess < ActiveRecord::Base
   end
 
   def tasks_timeline
-    tasks.sorted_by_current_start.map do |task|
-      {
-        start: task.current_start,
-        end: task.current_end,
+    tasks.order("assigned_start ASC").map do |task| {
+        start: task.assigned_start,
+        end: task.assigned_end,
         id: task.id,
-        content: "#{task.relative_id}: #{task.name} #{task.waitings_to_s}"
+        content: "#{task.name} #{task.waitings_to_s}"
       }
     end
   end

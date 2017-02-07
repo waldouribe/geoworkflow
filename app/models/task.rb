@@ -1,4 +1,6 @@
 class Task < ActiveRecord::Base
+  attr_accessor :dont_validate_start_and_end
+
   belongs_to :my_process
   belongs_to :user
   belongs_to :responsible_user, class_name: 'User', foreign_key: 'responsible_user_id'
@@ -12,18 +14,43 @@ class Task < ActiveRecord::Base
 
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
+  before_validation :assign_start_and_end, if: Proc.new{ |task| task.assigned_end.blank? }
 
   validates :name, presence: true
 
-  scope :sorted_by_current_start, -> { all.sort {|t1, t2| t1.current_start <=> t2.current_start} }
+  scope :sorted_by_assigned_start, -> { all.sort {|t1, t2| t1.assigned_start <=> t2.assigned_start} }
+
+  after_save :rearrange_waiting_tasks
+
+  validate :assigned_start_with_waitings, unless: Proc.new{ |task| task.dont_validate_start_and_end == true }
+  validate :assigned_end_with_waitings, unless: Proc.new{ |task| task.dont_validate_start_and_end == true }
+
+  def assigned_start_with_waitings
+    if self.assigned_start < min_assigned_start
+      errors[:assigned_start] << "Invalid date"
+    end
+  end
+
+  def assigned_end_with_waitings
+    if self.assigned_end > max_assigned_end
+      errors[:assigned_end] << "Invalid date"
+    end
+  end
+
+  def rearrange_waiting_tasks
+    waitings = Waiting.where(waiting_id: id)
+    waitings.each do |waiting|
+      waiting.rearrange_tasks
+    end
+  end
 
   def relative_id
-    sorted = my_process.tasks.sort {|t1, t2| t1.current_start <=> t2.current_start}
+    sorted = my_process.tasks.sort {|t1, t2| t1.assigned_start <=> t2.assigned_start}
     sorted.map(&:id).index(self.id)+1
   end
 
   def to_s
-    return description.first(100)
+    return "#{name} - id: #{id}"
   end
 
   def location
@@ -31,30 +58,58 @@ class Task < ActiveRecord::Base
   end
 
   def waitings_to_s
-    # if waiting_for_tasks.any?
-    #   "[(#{waiting_for_tasks.pluck(:id).join(", ")}) -> #{self.id}]"
-    # elsif tasks_waiting.any?
-    #   "[#{self.id}->(#{tasks_waiting.pluck(:id).join(", ")})]"
-    # end
     if waiting_for_tasks.any?
-      relative_ids = waiting_for_tasks.map{ |task| task.relative_id }.join(", ")
-      " | waiting for: [#{relative_ids}]"
+      names = waiting_for_tasks.map{ |task| task.name }
+      pluralized_names = (names.length >= 2) ?  ": [#{names.join(', ')}]" : " #{names.first}"
+      ", waiting for#{pluralized_names}"
     end
   end
 
-  def current_start
-    return assigned_start || created_at
+  def assign_start_and_end
+    self.assigned_start = DateTime.now
+    self.assigned_end = DateTime.now+1.hour
   end
 
-  def current_end
-    return assigned_end || created_at + 1.hour
+  def min_assigned_start
+    if waiting_for_tasks.empty?
+      assigned_start
+    else
+      waiting_for_tasks.map{ |task| task.assigned_end }.sort.last
+    end
   end
 
-  def starts_at
-    return DateTime.now()
+  def max_assigned_end
+    if tasks_waiting.empty?
+      DateTime.now + 2.weeks
+    else
+      tasks_waiting.map{ |task| task.assigned_start }.sort.last
+    end
   end
 
-  def ends_at
-    DateTime.now()+1.hour
+  def self.waiting_for_tasks_ids(task, ids)
+    waitings = Waiting.where(task: task)
+
+    if waitings.any?
+      ids += waitings.pluck :waiting_id
+      waitings.each do |waiting|
+        ids += self.waiting_for_tasks_ids(waiting.waiting, ids)
+      end
+    end
+
+    return ids.uniq
   end
+
+  def self.waiting_tasks_ids(task, ids)
+    waitings = Waiting.where(waiting_id: task)
+
+    if waitings.any?
+      ids += waitings.pluck :task_id
+      waitings.each do |waiting|
+        ids += self.waiting_tasks_ids(waiting.task, ids)
+      end
+    end
+
+    return ids.uniq
+  end
+
 end

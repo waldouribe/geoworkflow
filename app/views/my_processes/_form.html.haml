@@ -3,5 +3,9 @@
     = f.input :name
     = f.input :hashtag
 
+  %hr
+  
   .form-actions
-    = f.button :submit
+    = link_to 'Cancel', @my_process, class: 'btn btn-default'
+    = f.button :submit, class: 'btn btn-primary pull-right'
+    .clearfix

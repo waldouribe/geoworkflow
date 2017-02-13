@@ -37,7 +37,8 @@ class MyProcess < ActiveRecord::Base
     lng_sum = geolocated_tasks.map{ |t| t.longitude }.inject(:+)
     
     if lat_sum.nil?
-      return {lat: 30, lng: 30}
+      
+      return {lat: -33.4378305, lng: -70.65044920000003}
     else
       return {lat: lat_sum/geolocated_tasks.count, lng: lng_sum/geolocated_tasks.count}
     end

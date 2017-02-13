@@ -1,4 +1,4 @@
-= simple_form_for(@my_process) do |f|
+= simple_form_for my_process do |f|
   .form-inputs
     = f.input :name
     = f.input :hashtag
@@ -6,6 +6,6 @@
   %hr
   
   .form-actions
-    = link_to 'Cancel', @my_process, class: 'btn btn-default'
+    = link_to 'Close', my_process, class: 'btn btn-default'
     = f.button :submit, class: 'btn btn-primary pull-right'
     .clearfix

@@ -4,7 +4,6 @@
     %i.glyphicon.glyphicon-remove-circle
   .clearfix.mb-md
   .row
-    .col-xs-6
+    .col-xs-12
       = f.input :name, label: 'Task Name'
-    .col-xs-6
-      = f.input :address, label: 'Task Location / Address'
+      = f.input :address, label: 'Task Location / Address', as: :hidden

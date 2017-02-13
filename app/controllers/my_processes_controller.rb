@@ -29,8 +29,7 @@ class MyProcessesController < ApplicationController
     @my_process.user = current_user
 
     if @my_process.save
-      redirect_to new_tasks_my_process_path(@my_process)
-      #redirect_to success_my_process_path(@my_process)
+      redirect_to @my_process
     else
       render :new
     end
@@ -46,7 +45,7 @@ class MyProcessesController < ApplicationController
 
   def update
     if @my_process.update(my_process_params)
-      redirect_to @my_process, notice: 'My process was successfully updated.'
+      redirect_to @my_process
     else
       render :edit
     end

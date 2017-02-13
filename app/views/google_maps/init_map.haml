@@ -1,0 +1,14 @@
+  function initMap() {
+    var map;
+    map = new google.maps.Map(document.getElementById("pinned-map"), {
+      center: {lat: parseFloat("<%= center[:lat] %>"), lng: parseFloat("<%= center[:lng] %>")},
+      zoom: 13
+    });
+    <% locations.each do |location| %>
+      new google.maps.Marker({
+        position: {lat: parseFloat("<%= location[:lat] %>"), lng: parseFloat("<%= location[:lng] %>")},
+        map: map,
+        title: "<%= location[:title] %>"
+      });
+    <% end %>
+  }

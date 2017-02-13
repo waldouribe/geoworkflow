@@ -4,3 +4,4 @@
 //= require vis.min
 //= require forms
 //= require waitings
+//= require maps_searchbox

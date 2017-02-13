@@ -54,7 +54,7 @@ class Task < ActiveRecord::Base
   end
 
   def location
-    return {lat: latitude, lng: longitude, title: address}
+    return {lat: latitude, lng: longitude, title: address, task_id: id}
   end
 
   def waitings_to_s

@@ -1,0 +1,10 @@
+- object_name = object.class.to_s
+.modal.fade{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1", :id => "#{object_name.underscore}-modal-#{object.id}"}
+  .modal-dialog{:role => "document"}
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+        %h4#myModalLabel.modal-title= "#{object.class.to_s}"
+      .modal-body
+        = render "#{object_name.underscore.pluralize}/form", "#{object_name.underscore}".to_sym => object

@@ -22,5 +22,11 @@
 
   // Create a Timeline
   var timeline = new vis.Timeline(container, items, options);
+  timeline.on('click', function(event){
+    task_id = event['item'];
+    if(task_id != null) {
+      $("#edit-task-"+task_id).click();
+    }
+  });
 </script>
 

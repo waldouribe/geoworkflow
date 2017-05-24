@@ -28,7 +28,9 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       redirect_to my_process_path(@task.my_process, anchor: "task-#{@task.id}")
     else
-      render :edit
+      puts "--------------->"
+      puts @task.errors.full_messages
+      redirect_to my_process_path(@task.my_process, anchor: "task-#{@task.id}")
     end
   end
 
@@ -57,7 +59,8 @@ class TasksController < ApplicationController
         :assigned_start, 
         :assigned_end, 
         :responsible_user_id, 
-        :description
+        :description,
+        :waiting_for_task_ids => []
       )
     end
 end

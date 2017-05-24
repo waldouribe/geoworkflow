@@ -22,20 +22,20 @@ class Task < ActiveRecord::Base
 
   after_save :rearrange_waiting_tasks
 
-  validate :assigned_start_with_waitings, unless: Proc.new{ |task| task.dont_validate_start_and_end == true }
-  validate :assigned_end_with_waitings, unless: Proc.new{ |task| task.dont_validate_start_and_end == true }
+  #validate :assigned_start_with_waitings, unless: Proc.new{ |task| task.dont_validate_start_and_end == true }
+  #validate :assigned_end_with_waitings, unless: Proc.new{ |task| task.dont_validate_start_and_end == true }
 
-  def assigned_start_with_waitings
-    if self.assigned_start < min_assigned_start
-      errors[:assigned_start] << "Invalid date"
-    end
-  end
+  # def assigned_start_with_waitings
+  #   if self.assigned_start < min_assigned_start
+  #     errors[:assigned_start] << "Invalid date"
+  #   end
+  # end
 
-  def assigned_end_with_waitings
-    if self.assigned_end > max_assigned_end
-      errors[:assigned_end] << "Invalid date"
-    end
-  end
+  # def assigned_end_with_waitings
+  #   if self.assigned_end > max_assigned_end
+  #     errors[:assigned_end] << "Invalid date"
+  #   end
+  # end
 
   def rearrange_waiting_tasks
     waitings = Waiting.where(waiting_id: id)
@@ -112,4 +112,7 @@ class Task < ActiveRecord::Base
     return ids.uniq
   end
 
+  def can_wait_for
+    my_process.tasks.where.not(id: Task.waiting_tasks_ids(self, [])+[self.id])
+  end
 end

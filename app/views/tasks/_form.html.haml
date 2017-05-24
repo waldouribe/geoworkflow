@@ -7,9 +7,8 @@
         = f.association :my_process, as: :hidden
         = f.input :description, input_html: {class: 'width-100', style: 'height: 77px'}
         = f.association :responsible_user, include_blank: '-- Select user --', input_html: {class: 'width-100'}
-
+        = f.association :waiting_for_tasks, as: :check_boxes, collection: task.can_wait_for
   %hr
-  
   .form-actions
     = link_to 'Close', task.my_process, class: 'btn btn-default'
     = f.button :submit, class: 'btn btn-primary pull-right'

@@ -3,13 +3,16 @@
 
 <script type="text/javascript">
   dataSet = []
-  <% timeline.each do |point| %>
-    dataSet.push({
-      id: <%= point[:id] %>,
-      start: new Date(<%= point[:start].year %>, <%= (point[:start]-1.month).month %>, <%= point[:start].day %>, <%= point[:start].hour %>, <%= point[:start].min %>),
-      end: new Date(<%= point[:end].year %>, <%= (point[:end]-1.month).month %>, <%= point[:end].day %>, <%= point[:end].hour %>, <%= point[:end].min %>),
-      content: "<%= point[:content] %>",
-    })
+  <% to_timeline(tasks).each do |point| %>
+    <% if Task.find(point[:id].to_i).visible_for(@current_user) %>
+      dataSet.push({
+        id: <%= point[:id] %>,
+        start: new Date(<%= point[:assigned_start].year %>, <%= (point[:assigned_start]-1.month).month %>, <%= point[:assigned_start].day %>, <%= point[:assigned_start].hour %>, <%= point[:assigned_start].min %>),
+        end: new Date(<%= point[:assigned_end].year %>, <%= (point[:assigned_end]-1.month).month %>, <%= point[:assigned_end].day %>, <%= point[:assigned_end].hour %>, <%= point[:assigned_end].min %>),
+        content: "<%= point[:content] %>",
+        className: "<%= point[:status] %>"
+      })
+    <% end %>
   <% end %>
   // DOM element where the Timeline will be attached
   var container = document.getElementById('visualization');
@@ -28,5 +31,6 @@
       $("#edit-task-"+task_id).click();
     }
   });
+  
 </script>
 

@@ -7,7 +7,12 @@ Rails.application.routes.draw do
   resources :users
   resources :messages
   resources :waitings
-  resources :tasks
+  resources :tasks do
+    member do
+      get :begin
+      get :finish
+    end
+  end
   resources :my_processes do 
     member do 
       get :success

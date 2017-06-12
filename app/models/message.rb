@@ -1,6 +1,5 @@
 class Message < ActiveRecord::Base
   TWITTER_CONFIG = YAML.load_file("#{::Rails.root}/config/twitter.yml")[::Rails.env]
-  attr_accessor :custom
 
   belongs_to :sender, class_name: 'User', foreign_key: 'sender_id'
   belongs_to :receiver, class_name: 'User', foreign_key: 'receiver_id'
@@ -16,10 +15,7 @@ class Message < ActiveRecord::Base
       config.access_token        = sender.token
       config.access_token_secret = sender.secret
     end
-    if custom
-      client.update(message)
-    else
-      client.update("@#{receiver.username} ##{my_process.hashtag} #{message}")
-    end
+    
+    client.update(message)
   end
 end

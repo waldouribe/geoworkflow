@@ -3,10 +3,10 @@ class MyProcessesController < ApplicationController
 
   def index
     @my_processes = MyProcess.visibles_for(current_user).order('created_at DESC')
-    if @my_processes.any? and current_user.role?(:admin)
+    if @my_processes.any?
       redirect_to @my_processes.first
     else
-      render 'index'
+      render :empty
     end
   end
 
@@ -15,6 +15,11 @@ class MyProcessesController < ApplicationController
 
   def show
     @my_processes = MyProcess.visibles_for(current_user).order('created_at DESC')
+    if current_user.role == 'worker'
+      render :show_worker
+    else
+      render :show_admin
+    end
   end
 
   def new

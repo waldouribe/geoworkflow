@@ -4,7 +4,7 @@ class LandingController < ApplicationController
 
   def index
     if user_signed_in?
-      redirect_to new_my_process_path
+      redirect_to my_processes_path
     else
       render 'index'
     end

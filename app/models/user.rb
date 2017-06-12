@@ -1,8 +1,7 @@
 class User < ActiveRecord::Base
   cattr_reader :ROLES
-  @@ROLES = ['admin', 'member', 'worker']
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  @@ROLES = ['admin', 'worker', 'not-admitted']
+  
   devise :database_authenticatable, :registerable, :rememberable, :trackable
   has_many :process_types, dependent: :destroy
 

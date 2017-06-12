@@ -8,15 +8,16 @@ class MyProcess < ActiveRecord::Base
   has_many :tasks, dependent: :destroy
   has_many :messages, dependent: :destroy
 
-  #after_create :send_start_message TODO: Deprecate this
-
   validates :user, :name, :hashtag, presence: true
 
-  accepts_nested_attributes_for :tasks#, reject_if: lambda { |task| task[:name].blank? }
+  accepts_nested_attributes_for :tasks
 
   def self.visibles_for(user)
-    condition = "my_processes.user_id = ? OR tasks.responsible_user_id = ?"
-    MyProcess.joins("LEFT JOIN tasks ON 'my_process.id' = 'tasks.my_process_id'").where(condition, user.id, user.id)
+    if user.role? :admin
+      return MyProcess.all
+    else
+      MyProcess.joins(:tasks).where('tasks.responsible_user_id' => user.id).uniq
+    end
   end
 
   def to_s
@@ -57,14 +58,4 @@ class MyProcess < ActiveRecord::Base
   def twitter_status_url
     "https://twitter.com/search?q=%23#{hashtag}&src=typd"
   end
-
-  private 
-    def send_start_message
-      # Message.create(
-      #   sender: user, 
-      #   receiver: process_type.user, 
-      #   my_process: self,
-      #   message: "@#{process_type.user.username} quiero ##{hashtag} el día #{starts_at.day} de #{starts_at.strftime('%b')} a las #{starts_at.strftime("%H:%M")} en #{address}"[0..139],
-      #   custom: true)
-    end
 end

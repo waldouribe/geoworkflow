@@ -7,7 +7,7 @@ class Ability
     if user.role? :admin
       can :manage, :all
     else
-      can [:create, :index], MyProcess
+      can [:index, :show], MyProcess
       can [:create], User
     end
   end

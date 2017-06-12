@@ -9,6 +9,8 @@ class CreateMyProcesses < ActiveRecord::Migration
       t.float :latitude
       t.float :longitude
       t.datetime :starts_at
+      t.datetime :started_at
+      t.datetime :ended_at
 
       t.timestamps null: false
     end

@@ -14,33 +14,21 @@ class Task < ActiveRecord::Base
 
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
-  before_validation :assign_start_and_end, if: Proc.new{ |task| task.assigned_end.blank? }
+  before_create :assign_start_and_end#, if: Proc.new{ |task| task.assigned_end.blank? }
 
   validates :name, presence: true
 
   scope :sorted_by_assigned_start, -> { all.sort {|t1, t2| t1.assigned_start <=> t2.assigned_start} }
 
-  after_save :rearrange_waiting_tasks
-
-  #validate :assigned_start_with_waitings, unless: Proc.new{ |task| task.dont_validate_start_and_end == true }
-  #validate :assigned_end_with_waitings, unless: Proc.new{ |task| task.dont_validate_start_and_end == true }
-
-  # def assigned_start_with_waitings
-  #   if self.assigned_start < min_assigned_start
-  #     errors[:assigned_start] << "Invalid date"
-  #   end
-  # end
-
-  # def assigned_end_with_waitings
-  #   if self.assigned_end > max_assigned_end
-  #     errors[:assigned_end] << "Invalid date"
-  #   end
-  # end
+  before_save :rearrange_waiting_tasks
 
   def rearrange_waiting_tasks
     waitings = Waiting.where(waiting_id: id)
     waitings.each do |waiting|
       waiting.rearrange_tasks
+    end
+    if self.waiting_for_tasks.empty?
+      self.assign_start_and_end
     end
   end
 
@@ -49,40 +37,42 @@ class Task < ActiveRecord::Base
     sorted.map(&:id).index(self.id)+1
   end
 
+  def status
+    if actual_start.blank?
+      return 'not-started'
+    elsif actual_end.present?
+      return 'ended'
+    else
+      return 'in-progress'
+    end
+  end
+
   def to_s
-    return "#{name} - id: #{id}"
+    prefix = "<b>#{responsible_user || '@ ?'}</b> <small>must </small><b>#{name}</b> <small>at</small> <b>#{address}</b>"
+    waiting_for = waiting_for_tasks.any? ? " <small>when</small> <b>#{waiting_for_tasks.map{|task| task.name}.join(', ')}</b> <small>finishes</small>" : ''
+    return prefix+waiting_for
   end
 
   def location
-    return {lat: latitude, lng: longitude, title: address, task_id: id}
+    return {lat: latitude, lng: longitude, title: "#{name} at #{address}", task_id: id}
   end
 
   def waitings_to_s
     if waiting_for_tasks.any?
       names = waiting_for_tasks.map{ |task| task.name }
       pluralized_names = (names.length >= 2) ?  ": [#{names.join(', ')}]" : " #{names.first}"
-      ", waiting for#{pluralized_names}"
+      ", when #{pluralized_names} finishes"
     end
   end
 
   def assign_start_and_end
-    self.assigned_start = DateTime.now
-    self.assigned_end = DateTime.now+1.hour
-  end
-
-  def min_assigned_start
-    if waiting_for_tasks.empty?
-      assigned_start
+    oldest_task = self.my_process.tasks.order("assigned_start ASC").first
+    if oldest_task.present?
+      self.assigned_start = oldest_task.assigned_start
+      self.assigned_end = oldest_task.assigned_end
     else
-      waiting_for_tasks.map{ |task| task.assigned_end }.sort.last
-    end
-  end
-
-  def max_assigned_end
-    if tasks_waiting.empty?
-      DateTime.now + 2.weeks
-    else
-      tasks_waiting.map{ |task| task.assigned_start }.sort.last
+      self.assigned_start = DateTime.now
+      self.assigned_end = DateTime.now+1.hour
     end
   end
 
@@ -97,6 +87,10 @@ class Task < ActiveRecord::Base
     end
 
     return ids.uniq
+  end
+
+  def visible_for(user)
+    return (user.role?(:admin) or self.responsible_user == user)
   end
 
   def self.waiting_tasks_ids(task, ids)

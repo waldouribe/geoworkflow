@@ -1,15 +1,37 @@
-= simple_form_for task do |f|
-  .form-inputs
-    .row
-      .col-xs-12.col-sm-12
-        = f.input :name
-        = f.input :address
-        = f.association :my_process, as: :hidden
-        = f.input :description, input_html: {class: 'width-100', style: 'height: 77px'}
-        = f.association :responsible_user, include_blank: '-- Select user --', input_html: {class: 'width-100'}
-        = f.association :waiting_for_tasks, as: :check_boxes, collection: task.can_wait_for
-  %hr
-  .form-actions
+- if current_user.role? :admin
+  = simple_form_for task do |f|
+    .form-inputs
+      .row
+        .col-xs-12.col-sm-12
+          = f.input :name
+          = f.input :address
+          = f.association :my_process, as: :hidden
+          = f.input :description, input_html: {class: 'width-100', style: 'height: 77px'}
+          = f.association :responsible_user, include_blank: '-- Select user --', input_html: {class: 'width-100'}, collection: User.where(role: 'worker')
+          %table.table
+            %tr
+              %td Start
+              %td= "#{task.actual_start || '-'}"
+            %tr
+              %td End
+              %td= "#{task.actual_end || '-'}"
+          = f.association :waiting_for_tasks, as: :check_boxes, collection: task.can_wait_for
+    %hr
+    .form-actions
+      = link_to 'Close', task.my_process, class: 'btn btn-default'
+      = f.button :submit, class: 'btn btn-primary pull-right'
+      .clearfix
+- else
+  = simple_form_for task do |f|
+    %table.table
+      %tr
+        %td Start
+        %td= "#{task.actual_start || '-'}"
+      %tr
+        %td End 
+        %td= "#{task.actual_end || '-'}"
     = link_to 'Close', task.my_process, class: 'btn btn-default'
-    = f.button :submit, class: 'btn btn-primary pull-right'
-    .clearfix
+    - if task.actual_start.present?
+      = link_to 'End task', finish_task_path(task), class: "btn btn-primary pull-right #{'disabled' if task.actual_end.present?}"
+    - else
+      = link_to 'Start task', begin_task_path(task), class: 'btn btn-primary pull-right'

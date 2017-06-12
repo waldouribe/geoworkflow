@@ -1,11 +1,23 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:show, :edit, :update, :destroy, :begin, :finish]
 
   def index
     @tasks = Task.where("user => ? OR resposile_user", current_user, current_user).order('created_at DESC')
   end
 
   def show
+  end
+
+  def begin
+    Message.create(sender: current_user, message: "##{@task.my_process.hashtag} #{@task.name} started now at #{@task.address}")
+    @task.update_attribute :actual_start, DateTime.now
+    redirect_to @task.my_process
+  end
+
+  def finish
+    Message.create(sender: current_user, message: "##{@task.my_process.hashtag} #{@task.name} ended")
+    @task.update_attribute :actual_end, DateTime.now
+    redirect_to @task.my_process
   end
 
   def new
@@ -28,8 +40,6 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       redirect_to my_process_path(@task.my_process, anchor: "task-#{@task.id}")
     else
-      puts "--------------->"
-      puts @task.errors.full_messages
       redirect_to my_process_path(@task.my_process, anchor: "task-#{@task.id}")
     end
   end

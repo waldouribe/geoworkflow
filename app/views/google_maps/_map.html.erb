@@ -1,0 +1,28 @@
+<div id="map" class="map"></div>
+<script type="text/javascript">
+  function initAutocomplete() {
+    var map = new google.maps.Map(document.getElementById("map"), {
+      center: {lat: parseFloat("<%= center[:lat] %>"), lng: parseFloat("<%= center[:lng] %>")},
+      zoom: 13
+    });
+
+    <% locations.each do |location| %>
+      new_marker = new google.maps.Marker({
+        position: {lat: parseFloat("<%= location[:lat] %>"), lng: parseFloat("<%= location[:lng] %>")},
+        map: map,
+        title: "<%= location[:title] %>"
+      });
+      new_marker.addListener('click', function() {
+        $("#edit-task-<%= location[:task_id] %>").click();
+      });
+    <% end %>
+
+    // Create the search box and link it to the UI element.
+    var input = document.getElementById('pac-input');
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+    var markers = [];
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQLHznYx6UKpxcAAsWKXc2vMyL_TRRV6g&callback=initMap&libraries=places&callback=initAutocomplete" defer></script>
+

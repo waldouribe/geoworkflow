@@ -70,7 +70,8 @@ class TasksController < ApplicationController
         :assigned_end, 
         :responsible_user_id, 
         :description,
-        :waiting_for_task_ids => []
+        :waiting_for_task_ids => [],
+        :role_ids => [])
       )
     end
 end

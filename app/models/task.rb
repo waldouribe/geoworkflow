@@ -12,6 +12,8 @@ class Task < ActiveRecord::Base
   has_many :dependent_waitings, class_name: 'Waiting', foreign_key: 'waiting_id', dependent: :destroy
   has_many :tasks_waiting, through: :dependent_waitings, source: :task
 
+  has_and_belongs_to_many :roles
+
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
   before_create :assign_start_and_end

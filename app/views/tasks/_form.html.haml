@@ -2,19 +2,13 @@
   = simple_form_for task do |f|
     .form-inputs
       .row
-        .col-xs-12.col-sm-12
+        .col-xs-12.col-md-6
           = f.input :name
           = f.input :address
           = f.association :my_process, as: :hidden
           = f.input :description, input_html: {class: 'width-100', style: 'height: 77px'}
-          = f.association :responsible_user, include_blank: '-- Select user --', input_html: {class: 'width-100'}, collection: User.where(role: 'worker')
-          %table.table
-            %tr
-              %td Start
-              %td= "#{task.actual_start || '-'}"
-            %tr
-              %td End
-              %td= "#{task.actual_end || '-'}"
+        .col-xs-12.col-md-6
+          = f.association :roles, as: :check_boxes, roles: 'Roles'
           = f.association :waiting_for_tasks, as: :check_boxes, collection: task.can_wait_for
     %hr
     .form-actions

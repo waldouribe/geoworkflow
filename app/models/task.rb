@@ -14,7 +14,7 @@ class Task < ActiveRecord::Base
 
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
-  before_create :assign_start_and_end#, if: Proc.new{ |task| task.assigned_end.blank? }
+  before_create :assign_start_and_end
 
   validates :name, presence: true
 

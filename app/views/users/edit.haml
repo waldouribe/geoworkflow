@@ -1,0 +1,6 @@
+= simple_form_for @user do |f|
+  .form-inputs
+    = f.association :roles, as: :check_boxes, roles: 'Roles'
+    = f.input :role, label: 'Privileges', collection: User.ROLES, include_blank: false
+  .form-actions
+    = f.submit

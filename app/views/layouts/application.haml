@@ -12,7 +12,8 @@
       %div{:class => "alert alert-#{key} fade in", "data-dismiss" => "alert"}
         %button.close{"data-dismiss" => "alert"} &times;
         %strong= value.html_safe
-    .row-fluid
-      .col-xs-12
-        = yield
+    .container
+      .row-fluid
+        .col-xs-12
+          = yield
     .footer

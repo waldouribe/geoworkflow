@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :rememberable, :trackable
   has_many :process_types, dependent: :destroy
 
+  has_and_belongs_to_many :roles
+
   def to_s
     return "@#{username}"
   end

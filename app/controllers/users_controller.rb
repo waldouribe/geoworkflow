@@ -3,6 +3,10 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
+  def edit
+    @user = User.find_by params[:id]
+  end
+
   def update
     @user = User.find params[:id]
     @user.update(user_params)
@@ -10,6 +14,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:id, :role)
+    params.require(:user).permit(:id, :role, :role_ids => [])
   end
 end

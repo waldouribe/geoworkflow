@@ -1,0 +1,21 @@
+.header
+  %h1.no-margin.inline-block Roles
+  .header-actions.pull-right
+    = link_to '+ Create role', new_role_path, class: 'btn btn-primary'
+%table.mt-lg.table
+  %thead
+    %tr
+      %th Name      
+      %th
+
+  %tbody
+    - @roles.each do |role|
+      %tr
+        %td= role.name
+        %td
+          = link_to role, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-xs btn-danger pull-right' do 
+            %i.glyphicon.glyphicon-trash
+            Delete
+%br
+
+

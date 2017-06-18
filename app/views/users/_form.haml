@@ -1,0 +1,10 @@
+= simple_form_for @user do |f|
+  .row.form-inputs
+    .col-xs-12.col-md-6
+      = f.association :roles, as: :check_boxes, roles: 'Roles'
+    .col-xs-12.col-md-6
+      = f.input :role, label: 'Privileges', collection: User.ROLES, as: :radio_buttons
+  .form-actions
+    %hr
+    = link_to 'Cancel', users_path, class: 'btn btn-default'
+    = f.submit class: 'btn btn-primary pull-right'

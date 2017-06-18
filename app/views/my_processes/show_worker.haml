@@ -1,65 +1,64 @@
-.container
-  .row
-    .col-sm-4
-      .list-group
-        - @my_processes.each do |my_process|
-          = link_to my_process, class: "list-group-item #{'active' if my_process == @my_process}" do
-            = my_process.name
-            %br
-            %small
-              = "Created by: #{my_process.user}"            
-    .col-sm-8
-      %h1.no-margin= @my_process.name
-      .row
-        .col-xs-6
-          %b Created by:
-          = @my_process.user
-        .col-xs-6
-          %b Twitter status:
-          = link_to "##{@my_process.hashtag}", @my_process.twitter_status_url, target: '_blank'
-      .row.mt-lg
-        .col-xs-12
-          = render :partial => 'google_maps/map', :locals => {:locations => task_locations(@my_process.tasks.where(responsible_user_id: @current_user.id)), :center => @my_process.tasks_center}
-          = link_to 'add task', '#', {"data-target" => "#task-modal-0", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => 'add-task'}
-          = render 'shared/form_modal', object: @my_process.tasks.new(id: 0)
-          - @my_process.tasks.each do |task|
-            = link_to 'edit task', '#', {"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => "edit-task-#{task.id}"}
-            = render 'shared/form_modal', object: task
-          .timeline.mt-lg
-            = render 'timeline/timeline', tasks: @my_process.tasks
-          .hidden
-            %h2 Tasks
-            - @my_process.tasks.order("assigned_start ASC").each do |task|
-              .task.relative{id: "task-#{task.id}"}
-                = link_to '#', {"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button"} do
-                  %h3.no-margin= task.name
-                %p= "Responsible: #{task.responsible_user || '-'}"
-                .waitings.mb-md
-                  Waiting for: 
-                  - task.waitings.each do |waiting|
-                    %span.label.label-default.mr-sm{id: "waiting-#{waiting.id}"}
-                      = waiting.waiting.name
-                      = link_to '#', class: 'white-link destroy-waiting', data: {id: waiting.id} do 
-                        %i.glyphicon.glyphicon-remove
-                = link_to '+ Wait for', new_waiting_path(task_id: task.id), class: 'btn btn-default btn-xxs'
-                .top-right
-                  = render 'shared/modal', task: task
-                  %button.btn.btn-default.btn-xs{"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button", id: "edit-task-#{task.id}"}
-                    Edit
-                  = link_to task, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-default btn-xs' do
-                    %i.glyphicon.glyphicon-trash
-                .clearfix
-      .row
-        %h1 Work to do
-        %p Ordered by distance
-        %p Ordered by relevance
-        %p Rol excluyente para ciertas tareas cada usuario puede tener n roles
-        %p Abrir el menu para que se vean las tareas y dejarlas parecidas
+.row
+  .col-sm-4
+    .list-group
+      - @my_processes.each do |my_process|
+        = link_to my_process, class: "list-group-item #{'active' if my_process == @my_process}" do
+          = my_process.name
+          %br
+          %small
+            = "Created by: #{my_process.user}"            
+  .col-sm-8
+    %h1.no-margin= @my_process.name
+    .row
+      .col-xs-6
+        %b Created by:
+        = @my_process.user
+      .col-xs-6
+        %b Twitter status:
+        = link_to "##{@my_process.hashtag}", @my_process.twitter_status_url, target: '_blank'
+    .row.mt-lg
+      .col-xs-12
+        = render :partial => 'google_maps/map', :locals => {:locations => task_locations(@my_process.tasks.where(responsible_user_id: @current_user.id)), :center => @my_process.tasks_center}
+        = link_to 'add task', '#', {"data-target" => "#task-modal-0", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => 'add-task'}
+        = render 'shared/form_modal', object: @my_process.tasks.new(id: 0)
+        - @my_process.tasks.each do |task|
+          = link_to 'edit task', '#', {"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => "edit-task-#{task.id}"}
+          = render 'shared/form_modal', object: task
+        .timeline.mt-lg
+          = render 'timeline/timeline', tasks: @my_process.tasks
+        .hidden
+          %h2 Tasks
+          - @my_process.tasks.order("assigned_start ASC").each do |task|
+            .task.relative{id: "task-#{task.id}"}
+              = link_to '#', {"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button"} do
+                %h3.no-margin= task.name
+              %p= "Responsible: #{task.responsible_user || '-'}"
+              .waitings.mb-md
+                Waiting for: 
+                - task.waitings.each do |waiting|
+                  %span.label.label-default.mr-sm{id: "waiting-#{waiting.id}"}
+                    = waiting.waiting.name
+                    = link_to '#', class: 'white-link destroy-waiting', data: {id: waiting.id} do 
+                      %i.glyphicon.glyphicon-remove
+              = link_to '+ Wait for', new_waiting_path(task_id: task.id), class: 'btn btn-default btn-xxs'
+              .top-right
+                = render 'shared/modal', task: task
+                %button.btn.btn-default.btn-xs{"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button", id: "edit-task-#{task.id}"}
+                  Edit
+                = link_to task, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-default btn-xs' do
+                  %i.glyphicon.glyphicon-trash
+              .clearfix
+    .row
+      %h1 Work to do
+      %p Ordered by distance
+      %p Ordered by relevance
+      %p Rol excluyente para ciertas tareas cada usuario puede tener n roles
+      %p Abrir el menu para que se vean las tareas y dejarlas parecidas
 
-        %p ¿Dónde veo cuanto se demoró en realizar cierta tarea?
-        %p Pintar los procesos de colores para ve en que estado estan
-        %p Last known location
-        %p take, start, end
+      %p ¿Dónde veo cuanto se demoró en realizar cierta tarea?
+      %p Pintar los procesos de colores para ve en que estado estan
+      %p Last known location
+      %p take, start, end
 
 
 

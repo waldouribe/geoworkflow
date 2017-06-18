@@ -62,6 +62,7 @@ class TasksController < ApplicationController
       params.require(:task).permit(
         :name,
         :my_process_id, 
+        :priority,
         :user_id, 
         :address, 
         :latitude, 
@@ -71,7 +72,7 @@ class TasksController < ApplicationController
         :responsible_user_id, 
         :description,
         :waiting_for_task_ids => [],
-        :role_ids => [])
+        :role_ids => []
       )
     end
 end

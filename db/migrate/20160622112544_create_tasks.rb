@@ -5,6 +5,7 @@ class CreateTasks < ActiveRecord::Migration
       t.references :responsible_user, index: true
       t.string :address
       t.string :name
+      t.integer :priority
       t.text :description
       t.float :latitude
       t.float :longitude      

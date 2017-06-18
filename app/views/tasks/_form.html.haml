@@ -8,7 +8,8 @@
           = f.association :my_process, as: :hidden
           = f.input :description, input_html: {class: 'width-100', style: 'height: 77px'}
         .col-xs-12.col-md-6
-          = f.association :roles, as: :check_boxes, roles: 'Roles'
+          = f.input :priority, collection: (1..10).to_a, include_blank: '-- Select priority --'
+          = f.association :roles, as: :check_boxes, roles: 'Roles'          
           = f.association :waiting_for_tasks, as: :check_boxes, collection: task.can_wait_for
     %hr
     .form-actions

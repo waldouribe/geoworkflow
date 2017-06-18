@@ -19,6 +19,7 @@ class Task < ActiveRecord::Base
   before_create :assign_start_and_end
 
   validates :name, presence: true
+  validates :priority, numericality: { greater_than_or_equal_to: 1 }
 
   scope :sorted_by_assigned_start, -> { all.sort {|t1, t2| t1.assigned_start <=> t2.assigned_start} }
 
@@ -92,7 +93,15 @@ class Task < ActiveRecord::Base
   end
 
   def visible_for(user)
-    return (user.role?(:admin) or self.responsible_user == user)
+    return (user.role?(:admin) or self.roles.empty? or (self.roles.pluck(:name) & user.roles.pluck(:name)).any?)
+  end
+
+  def self.visibles_for(user)
+    if user.role == 'admin'
+      self.all
+    else
+      Task.joins('LEFT JOIN roles_tasks').where('roles_tasks.task_id IS NULL OR roles_tasks.role_id IN (?)', user.roles.pluck(:id))
+    end
   end
 
   def self.waiting_tasks_ids(task, ids)

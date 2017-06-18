@@ -14,9 +14,9 @@ class MyProcess < ActiveRecord::Base
 
   def self.visibles_for(user)
     if user.role? :admin
-      return MyProcess.all
+      MyProcess.all
     else
-      MyProcess.joins(:tasks).where('tasks.responsible_user_id' => user.id).uniq
+      MyProcess.joins(:tasks).merge(Task.visibles_for(user)).uniq
     end
   end
 

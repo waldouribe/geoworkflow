@@ -13,9 +13,10 @@
       %tr
         %td= role.name
         %td
-          = link_to role, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-xs btn-danger pull-right' do 
-            %i.glyphicon.glyphicon-trash
-            Delete
-%br
-
-
+          .pull-right
+            = link_to edit_role_path(role), class: 'btn btn-default btn-sm mr-sm' do 
+              %i.glyphicon.glyphicon-pencil
+              Edit
+            = link_to role, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn-sm btn-danger pull-right' do 
+              %i.glyphicon.glyphicon-trash
+              Delete

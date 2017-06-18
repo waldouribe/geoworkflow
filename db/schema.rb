@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 20170617184006) do
     t.integer  "responsible_user_id"
     t.string   "address"
     t.string   "name"
+    t.integer  "priority"
     t.text     "description"
     t.float    "latitude"
     t.float    "longitude"

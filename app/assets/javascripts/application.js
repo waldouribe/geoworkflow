@@ -5,3 +5,4 @@
 //= require forms
 //= require waitings
 //= require maps_searchbox
+//= require my_process

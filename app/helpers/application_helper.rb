@@ -16,8 +16,16 @@ module ApplicationHelper
         actual_end: task.actual_end,
         id: task.id,
         content: "#{task.name} #{task.waitings_to_s}",
-        status: task.status 
+        visible_status: visible_status(task)
       }
+    end
+  end
+
+  def visible_status(task)
+    if !task.doable?
+      return 'blocked'
+    else
+      return task.status
     end
   end
 

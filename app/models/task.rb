@@ -56,6 +56,14 @@ class Task < ActiveRecord::Base
     return prefix+waiting_for
   end
 
+  def doable?
+    waiting_for_tasks.where('tasks.actual_end IS NULL').blank? and actual_start.nil?
+  end
+
+
+  def order_by_position
+  end
+  
   def location
     return {lat: latitude, lng: longitude, title: "#{name} at #{address}", task_id: id}
   end
@@ -100,7 +108,7 @@ class Task < ActiveRecord::Base
     if user.role == 'admin'
       self.all
     else
-      Task.joins('LEFT JOIN roles_tasks').where('roles_tasks.task_id IS NULL OR roles_tasks.role_id IN (?)', user.roles.pluck(:id))
+      Task.joins('LEFT JOIN roles_tasks').where('roles_tasks.task_id IS NULL OR roles_tasks.role_id IN (?)', user.roles.pluck(:id)).uniq
     end
   end
 

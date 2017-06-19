@@ -10,7 +10,7 @@
         start: new Date(<%= point[:assigned_start].year %>, <%= (point[:assigned_start]-1.month).month %>, <%= point[:assigned_start].day %>, <%= point[:assigned_start].hour %>, <%= point[:assigned_start].min %>),
         end: new Date(<%= point[:assigned_end].year %>, <%= (point[:assigned_end]-1.month).month %>, <%= point[:assigned_end].day %>, <%= point[:assigned_end].hour %>, <%= point[:assigned_end].min %>),
         content: "<%= point[:content] %>",
-        className: "<%= point[:status] %>"
+        className: "<%= point[:visible_status] %>"
       })
     <% end %>
   <% end %>
@@ -28,7 +28,14 @@
   timeline.on('click', function(event){
     task_id = event['item'];
     if(task_id != null) {
-      $("#edit-task-"+task_id).click();
+      <% if current_user.role?(:admin) %>
+        $("#edit-task-"+task_id).click();
+      <% else %>
+        target = $(event['event']['firstTarget']);
+        if(target.parents('.blocked').length == 0) {
+          $("#edit-task-"+task_id).click();
+        }
+      <% end %>
     }
   });
   

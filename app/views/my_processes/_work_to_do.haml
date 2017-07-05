@@ -1,0 +1,13 @@
+.header
+  %h1.no-margin.inline-block Work to do
+  = simple_form_for :sort, html: {class: 'inline-block pull-right'} do |f|
+    = f.input :field, collection: [['Best route', 'best_route'], ['Priority', 'priority']], include_blank: false, label: 'ORDER BY', required: false
+
+.mt-md
+  - fake_distances = [0.05, 1.24, 3.73, 8.91, 8.64]
+  - @my_process.tasks.visibles_for(current_user).order("tasks.priority ASC").each_with_index do |task, index|
+    .task-block.vis-item.work-to-do-item{class: "#{visible_status(task)} #{'doable' if task.doable?}", data: {'task-id'=>task.id}}
+      = "#{task.name} #{task.waitings_to_s}"
+      %br
+      %small
+        = "#{pluralize(fake_distances[index], 'mile', 'miles')} away | #{task.address}"

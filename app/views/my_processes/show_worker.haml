@@ -6,18 +6,14 @@
           = my_process.name
           %br
           %small
-            = "Created by: #{my_process.user}"            
+            = "Created by: #{my_process.user}"
   .col-sm-8
     .row
       .col-xs-12
-        %h1.no-margin Work to do
-        .mt-md
-          - @my_process.tasks.visibles_for(current_user).order("tasks.priority ASC").each do |task|
-            .task-block.vis-item.work-to-do-item{class: "#{visible_status(task)} #{'doable' if task.doable?}", data: {'task-id'=>task.id}}
-              = "#{task.name} #{task.waitings_to_s}"
+        = render 'my_processes/work_to_do'
     .row.mt-lg
       .col-xs-12
-        = render :partial => 'google_maps/map', :locals => {:locations => task_locations(@my_process.tasks.where(responsible_user_id: @current_user.id)), :center => @my_process.tasks_center}
+        = render :partial => 'google_maps/map', :locals => {:locations => task_locations(@my_process.tasks.visibles_for(current_user)), :center => @my_process.tasks_center}
         = link_to 'add task', '#', {"data-target" => "#task-modal-0", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => 'add-task'}
         = render 'shared/form_modal', object: @my_process.tasks.new(id: 0)
         - @my_process.tasks.each do |task|
@@ -33,11 +29,11 @@
                 %h3.no-margin= task.name
               %p= "Responsible: #{task.responsible_user || '-'}"
               .waitings.mb-md
-                Waiting for: 
+                Waiting for:
                 - task.waitings.each do |waiting|
                   %span.label.label-default.mr-sm{id: "waiting-#{waiting.id}"}
                     = waiting.waiting.name
-                    = link_to '#', class: 'white-link destroy-waiting', data: {id: waiting.id} do 
+                    = link_to '#', class: 'white-link destroy-waiting', data: {id: waiting.id} do
                       %i.glyphicon.glyphicon-remove
               = link_to '+ Wait for', new_waiting_path(task_id: task.id), class: 'btn btn-default btn-xxs'
               .top-right

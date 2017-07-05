@@ -2,15 +2,16 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy, :begin, :finish]
 
   def index
-    @tasks = Task.where("user => ? OR resposile_user", current_user, current_user).order('created_at DESC')
+    @tasks = Task.where("user => ? OR responsible_user", current_user, current_user).order('created_at DESC')
   end
 
   def show
   end
 
   def begin
-    Message.create(sender: current_user, message: "##{@task.my_process.hashtag} #{@task.name} started now at #{@task.address}")
-    @task.update_attribute :actual_start, DateTime.now
+    message = "##{@task.my_process.hashtag} #{@task.name} started now at #{@task.address}".first(140)
+    Message.create(sender: current_user, message: message)
+    @task.update_attributes actual_start: DateTime.now, responsible_user_id: current_user.id
     redirect_to @task.my_process
   end
 
@@ -61,15 +62,15 @@ class TasksController < ApplicationController
     def task_params
       params.require(:task).permit(
         :name,
-        :my_process_id, 
+        :my_process_id,
         :priority,
-        :user_id, 
-        :address, 
-        :latitude, 
-        :longitude, 
-        :assigned_start, 
-        :assigned_end, 
-        :responsible_user_id, 
+        :user_id,
+        :address,
+        :latitude,
+        :longitude,
+        :assigned_start,
+        :assigned_end,
+        :responsible_user_id,
         :description,
         :waiting_for_task_ids => [],
         :role_ids => []

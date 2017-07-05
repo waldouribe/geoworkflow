@@ -22,7 +22,7 @@ module ApplicationHelper
   end
 
   def visible_status(task)
-    if !task.doable?
+    if !task.doable?(current_user)
       return 'blocked'
     else
       return task.status

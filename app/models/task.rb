@@ -56,14 +56,14 @@ class Task < ActiveRecord::Base
     return prefix+waiting_for
   end
 
-  def doable?
-    waiting_for_tasks.where('tasks.actual_end IS NULL').blank? and actual_start.nil?
+  def doable?(user)
+    waiting_for_tasks.where('tasks.actual_end IS NULL').blank? and (actual_start.nil? or responsible_user == user)
   end
 
 
   def order_by_position
   end
-  
+
   def location
     return {lat: latitude, lng: longitude, title: "#{name} at #{address}", task_id: id}
   end

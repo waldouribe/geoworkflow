@@ -19,12 +19,15 @@ if Rails.env.development?
 
   t1 = p2.tasks.find_or_create_by(address: 'Los Dominicos 8630, Las Condes', name: 'Turn off generator', priority: 1)
   t2 = p2.tasks.find_or_create_by(address: 'Vitacura 6440, Vitacura', name: 'Replace AD-450 cable', priority: 2)
-  t3 = p2.tasks.find_or_create_by(address: 'Vitacura 6440, Vitacura', name: 'Clean F-20 board', priority: 3)
-  t4 = p2.tasks.find_or_create_by(address: 'Los Dominicos 8630, Las Condes', name: 'Turn on generator', priority: 4)
-  t5 = p2.tasks.find_or_create_by(address: 'Los Dominicos 8630, Las Condes', name: 'Check status', priority: 5)
+  t3 = p2.tasks.find_or_create_by(address: 'Vitacura 6440, Vitacura', name: 'Replace FH-04 cable', priority: 2)
+  t4 = p2.tasks.find_or_create_by(address: 'Vitacura 6440, Vitacura', name: 'Clean F-20 board', priority: 3)
+  t5 = p2.tasks.find_or_create_by(address: 'Los Dominicos 8630, Las Condes', name: 'Turn on generator', priority: 4)
+  t6 = p2.tasks.find_or_create_by(address: 'Los Dominicos 8630, Las Condes', name: 'Check status', priority: 5)
 
   Waiting.find_or_create_by(task: t2, waiting: t1)
-  Waiting.find_or_create_by(task: t3, waiting: t2)
+  Waiting.find_or_create_by(task: t3, waiting: t1)
+  Waiting.find_or_create_by(task: t4, waiting: t2)
   Waiting.find_or_create_by(task: t4, waiting: t3)
   Waiting.find_or_create_by(task: t5, waiting: t4)
+  Waiting.find_or_create_by(task: t6, waiting: t5)
 end

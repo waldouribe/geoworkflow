@@ -108,7 +108,9 @@ class Task < ActiveRecord::Base
     if user.role == 'admin'
       self.all
     else
-      Task.joins('LEFT JOIN roles_tasks').where('roles_tasks.task_id IS NULL OR roles_tasks.role_id IN (?)', user.roles.pluck(:id)).uniq
+      Task.joins('LEFT JOIN roles_tasks ON tasks.id = roles_tasks.task_id')
+      .where('roles_tasks.task_id IS NULL OR roles_tasks.role_id IN (?)', user.roles.pluck(:id))
+      .uniq
     end
   end
 

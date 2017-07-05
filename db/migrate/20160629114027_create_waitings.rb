@@ -1,8 +1,8 @@
 class CreateWaitings < ActiveRecord::Migration
   def change
     create_table :waitings do |t|
-      t.references :task, index: true, foreign_key: true
-      t.references :waiting, index: true, foreign_key: true
+      t.integer :task_id, index: true
+      t.integer :waiting_id, index: true
 
       t.timestamps null: false
     end

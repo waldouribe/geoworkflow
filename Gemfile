@@ -57,12 +57,14 @@ gem 'omniauth-twitter'
 
 gem 'twitter'
 
-group :production, :staging do
+group :production, :development do
   # For postgres
   gem 'pg'
+end
 
+group :production, :staging do
   # For assets in heroku
-  gem 'rails_12factor' 
+  gem 'rails_12factor'
 end
 
 group :development, :test do
@@ -75,9 +77,11 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 
-  # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
-
   # For tests
   gem "rspec-rails"
+end
+
+group :test do
+  # Use sqlite3 as the database for Active Record
+  gem 'sqlite3'
 end

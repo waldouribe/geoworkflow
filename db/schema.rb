@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20170617184006) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "messages", force: :cascade do |t|
     t.integer  "sender_id"
     t.integer  "receiver_id"
@@ -22,9 +25,9 @@ ActiveRecord::Schema.define(version: 20170617184006) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "messages", ["my_process_id"], name: "index_messages_on_my_process_id"
-  add_index "messages", ["receiver_id"], name: "index_messages_on_receiver_id"
-  add_index "messages", ["sender_id"], name: "index_messages_on_sender_id"
+  add_index "messages", ["my_process_id"], name: "index_messages_on_my_process_id", using: :btree
+  add_index "messages", ["receiver_id"], name: "index_messages_on_receiver_id", using: :btree
+  add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree
 
   create_table "my_processes", force: :cascade do |t|
     t.integer  "process_type_id"
@@ -41,8 +44,8 @@ ActiveRecord::Schema.define(version: 20170617184006) do
     t.datetime "updated_at",      null: false
   end
 
-  add_index "my_processes", ["process_type_id"], name: "index_my_processes_on_process_type_id"
-  add_index "my_processes", ["user_id"], name: "index_my_processes_on_user_id"
+  add_index "my_processes", ["process_type_id"], name: "index_my_processes_on_process_type_id", using: :btree
+  add_index "my_processes", ["user_id"], name: "index_my_processes_on_user_id", using: :btree
 
   create_table "process_types", force: :cascade do |t|
     t.integer  "user_id"
@@ -53,8 +56,8 @@ ActiveRecord::Schema.define(version: 20170617184006) do
     t.datetime "updated_at",  null: false
   end
 
-  add_index "process_types", ["name"], name: "index_process_types_on_name"
-  add_index "process_types", ["user_id"], name: "index_process_types_on_user_id"
+  add_index "process_types", ["name"], name: "index_process_types_on_name", using: :btree
+  add_index "process_types", ["user_id"], name: "index_process_types_on_user_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
@@ -69,8 +72,8 @@ ActiveRecord::Schema.define(version: 20170617184006) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "roles_tasks", ["role_id"], name: "index_roles_tasks_on_role_id"
-  add_index "roles_tasks", ["task_id"], name: "index_roles_tasks_on_task_id"
+  add_index "roles_tasks", ["role_id"], name: "index_roles_tasks_on_role_id", using: :btree
+  add_index "roles_tasks", ["task_id"], name: "index_roles_tasks_on_task_id", using: :btree
 
   create_table "roles_users", id: false, force: :cascade do |t|
     t.integer  "role_id"
@@ -79,8 +82,8 @@ ActiveRecord::Schema.define(version: 20170617184006) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "roles_users", ["role_id"], name: "index_roles_users_on_role_id"
-  add_index "roles_users", ["user_id"], name: "index_roles_users_on_user_id"
+  add_index "roles_users", ["role_id"], name: "index_roles_users_on_role_id", using: :btree
+  add_index "roles_users", ["user_id"], name: "index_roles_users_on_user_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
     t.integer  "my_process_id"
@@ -99,8 +102,8 @@ ActiveRecord::Schema.define(version: 20170617184006) do
     t.datetime "updated_at",          null: false
   end
 
-  add_index "tasks", ["my_process_id"], name: "index_tasks_on_my_process_id"
-  add_index "tasks", ["responsible_user_id"], name: "index_tasks_on_responsible_user_id"
+  add_index "tasks", ["my_process_id"], name: "index_tasks_on_my_process_id", using: :btree
+  add_index "tasks", ["responsible_user_id"], name: "index_tasks_on_responsible_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: ""
@@ -124,8 +127,8 @@ ActiveRecord::Schema.define(version: 20170617184006) do
     t.string   "role",                   default: "not-admitted"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email"
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "waitings", force: :cascade do |t|
     t.integer  "task_id"
@@ -134,7 +137,16 @@ ActiveRecord::Schema.define(version: 20170617184006) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "waitings", ["task_id"], name: "index_waitings_on_task_id"
-  add_index "waitings", ["waiting_id"], name: "index_waitings_on_waiting_id"
+  add_index "waitings", ["task_id"], name: "index_waitings_on_task_id", using: :btree
+  add_index "waitings", ["waiting_id"], name: "index_waitings_on_waiting_id", using: :btree
 
+  add_foreign_key "messages", "my_processes"
+  add_foreign_key "my_processes", "process_types"
+  add_foreign_key "my_processes", "users"
+  add_foreign_key "process_types", "users"
+  add_foreign_key "roles_tasks", "roles"
+  add_foreign_key "roles_tasks", "tasks"
+  add_foreign_key "roles_users", "roles"
+  add_foreign_key "roles_users", "users"
+  add_foreign_key "tasks", "my_processes"
 end

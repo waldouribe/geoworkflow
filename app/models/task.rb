@@ -25,6 +25,19 @@ class Task < ActiveRecord::Base
 
   before_save :rearrange_waiting_tasks
 
+  def order_by(option)
+    case option
+      when "distance"
+        redirect_to()
+      when "priority"
+        redirect_to()
+      when ""
+
+      else
+        raise 'Option not found'
+    end
+  end
+
   def rearrange_waiting_tasks
     waitings = Waiting.where(waiting_id: id)
     waitings.each do |waiting|

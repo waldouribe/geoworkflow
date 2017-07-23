@@ -1,6 +1,5 @@
 .header
   %h1.no-margin.inline-block Work to do
-  %h1= "location: (#{request.location.latitude}, #{request.location.longitude})"
   .pull-right
     %label: Order:
     = link_to 'Best Route', my_process_path(order: 'distance'), class: "btn btn-xs #{'btn-primary' if params[:order]== 'distance'}"

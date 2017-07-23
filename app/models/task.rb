@@ -59,7 +59,7 @@ class Task < ActiveRecord::Base
       end
     end
 
-    puts "-----> #{closest.name} #{closest.latitude.round(3)}, #{closest.longitude.round(3)}, distance: #{distance}"
+    puts "-----> #{closest.name} #{closest.latitude}, #{closest.longitude}, distance: #{min}"
 
     return closest
   end

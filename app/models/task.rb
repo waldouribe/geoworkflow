@@ -29,14 +29,16 @@ class Task < ActiveRecord::Base
     case params[:order]
       when "distance"
         location = Geocoder.search(params[:ip])
-        lat = location[0].data['latitude']
-        long = location[0].data['longitude']
+        current_lat = location[0].data['latitude']
+        current_long = location[0].data['longitude']
         ans = []
 
         tasks.each do |task|
-          the_closest = Task.closest(tasks, lat, long)
+          the_closest = Task.closest(tasks, current_lat, current_long)
           ans << the_closest
           tasks = tasks.where("id != ?", the_closest.id)
+          current_lat = the_closest.latitude
+          current_long = the_closest.longitude
         end
         return ans
       when "priority"

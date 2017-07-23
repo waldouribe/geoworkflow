@@ -1,5 +1,6 @@
 .header
   %h1.no-margin.inline-block Work to do
+  %h1= "location: (#{request.location.latitude}, #{request.location.longitude})"
   = simple_form_for :sort, html: {class: 'inline-block pull-right'} do |f|
     = f.input :field, collection: [['Best route', 'best_route'], ['Priority', 'priority']], include_blank: false, label: 'ORDER BY', required: false
 

@@ -55,8 +55,11 @@ class Task < ActiveRecord::Base
       distance = Math.sqrt((task.latitude-lat.to_f)**2 + (task.longitude-long.to_f)**2)
       if !min or distance < min
         closest = task
+        min = distance
       end
     end
+
+    puts "-----> #{closest.name} #{closest.latitude.round(3)}, #{closest.longitude.round(3)}"
 
     return closest
   end

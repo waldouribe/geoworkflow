@@ -1,14 +1,17 @@
 .header
   %h1.no-margin.inline-block Work to do
   %h1= "location: (#{request.location.latitude}, #{request.location.longitude})"
-  = simple_form_for :sort, html: {class: 'inline-block pull-right'} do |f|
-    = f.input :field, collection: [['Best route', 'best_route'], ['Priority', 'priority']], include_blank: false, label: 'ORDER BY', required: false
-
-.mt-md
+  .pull-right
+    %label: Order:
+    = link_to 'Best Route', my_process_path(order: 'distance'), class: "btn btn-xs #{'btn-primary' if params[:order]== 'distance'}"
+    = link_to 'Priority', my_process_path(order: 'priority'), class: "btn btn-xs #{'btn-primary' if params[:order]== 'priority'}"
+    = link_to 'Time', my_process_path(order: 'assigned_at'), class: "btn btn-xs #{'btn-primary' if params[:order]== 'assigned_at'}"
+  .clearfix
+.mt-lg
   - fake_distances = [0.05, 1.24, 3.73, 8.91, 8.64]
-  - @my_process.tasks.visibles_for(current_user).order("tasks.priority ASC").each_with_index do |task, index|
+  - Task.order_by(@my_process.tasks.visibles_for(current_user), order: params[:order], ip: request.ip).each_with_index do |task, index|
     .task-block.vis-item.work-to-do-item{class: "#{visible_status(task)} #{'doable' if task.doable?(current_user)}", data: {'task-id'=>task.id}}
       = "#{task.name} #{task.waitings_to_s}"
       %br
       %small
-        = "#{pluralize(fake_distances[index], 'mile', 'miles')} away | #{task.address}"
+        = task.address

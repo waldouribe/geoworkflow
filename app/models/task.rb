@@ -25,17 +25,40 @@ class Task < ActiveRecord::Base
 
   before_save :rearrange_waiting_tasks
 
-  def order_by(option)
-    case option
+  def self.order_by(tasks, params)
+    case params[:order]
       when "distance"
-        redirect_to()
-      when "priority"
-        redirect_to()
-      when ""
+        location = Geocoder.search(params[:ip])
+        lat = location[0].data['latitude']
+        long = location[0].data['longitude']
+        ans = []
 
+        tasks.each do |task|
+          the_closest = Task.closest(tasks, lat, long)
+          ans << the_closest
+          tasks = tasks.where("id != ?", the_closest.id)
+        end
+        return ans
+      when "priority"
+        return tasks.order("priority ASC")
+      when "assigned_start"
+        return tasks.order("assigned_start ASC")
       else
-        raise 'Option not found'
+        return tasks.order("assigned_start ASC")
     end
+  end
+
+  def self.closest(tasks, lat, long)
+    min = nil
+    closest = nil
+    tasks.each do |task|
+      distance = Math.sqrt((task.latitude-lat.to_f)**2 + (task.longitude-long.to_f)**2)
+      if !min or distance < min
+        closest = task
+      end
+    end
+
+    return closest
   end
 
   def rearrange_waiting_tasks
@@ -73,9 +96,6 @@ class Task < ActiveRecord::Base
     waiting_for_tasks.where('tasks.actual_end IS NULL').blank? and (actual_start.nil? or responsible_user == user)
   end
 
-
-  def order_by_position
-  end
 
   def location
     return {lat: latitude, lng: longitude, title: "#{name} at #{address}", task_id: id}

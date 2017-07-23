@@ -7,7 +7,6 @@
     = link_to 'Time', my_process_path(order: 'assigned_at'), class: "btn btn-xs #{'btn-primary' if params[:order]== 'assigned_at'}"
   .clearfix
 .mt-lg
-  = Geocoder.search(request.ip)[0].data
   - Task.order_by(@my_process.tasks.visibles_for(current_user), order: params[:order], ip: request.ip).each_with_index do |task, index|
     .task-block.vis-item.work-to-do-item{class: "#{visible_status(task)} #{'doable' if task.doable?(current_user)}", data: {'task-id'=>task.id}}
       = "#{task.name} #{task.waitings_to_s}"

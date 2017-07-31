@@ -29,11 +29,15 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
+    create_params = task_params
+    create_params.delete(:waiting_for_task_ids)
+    @task = Task.new(create_params)
+
     if @task.save
+      @task.update(waiting_for_task_ids: task_params[:waiting_for_task_ids])
       redirect_to @task.my_process
     else
-      render :new
+      redirect_to MyProcess.find(task_params[:my_process_id]), notice: "#{@task.errors.full_messages.first} -> #{create_params[:waiting_for_task_ids]}"
     end
   end
 

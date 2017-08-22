@@ -1,6 +1,6 @@
 class Waiting < ActiveRecord::Base
   belongs_to :task
-  belongs_to :waiting, class_name: 'Task'
+  belongs_to :waiting, class_name: 'Task', foreign_key: 'waiting_id'
   validates :task, :waiting, presence: true
 
   after_create :rearrange_tasks

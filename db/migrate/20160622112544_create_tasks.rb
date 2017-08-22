@@ -4,16 +4,17 @@ class CreateTasks < ActiveRecord::Migration
       t.references :my_process, index: true, foreign_key: true
       t.references :responsible_user, index: true
       t.string :address
+      t.string :link
       t.string :name
       t.integer :priority
       t.text :description
       t.float :latitude
-      t.float :longitude      
+      t.float :longitude
       t.datetime :assigned_start
       t.datetime :assigned_end
       t.datetime :actual_start
       t.datetime :actual_end
-      
+
       t.timestamps null: false
     end
   end

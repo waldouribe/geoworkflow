@@ -59,7 +59,7 @@ class MyProcessesController < ApplicationController
   def destroy
     @my_process.destroy
     respond_to do |format|
-      format.html { redirect_to my_processes_url, notice: 'My process was successfully destroyed.' }
+      format.html { redirect_to my_processes_url }
       format.json { head :no_content }
     end
   end

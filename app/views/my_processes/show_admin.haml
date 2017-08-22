@@ -6,11 +6,15 @@
           = my_process.name
           %br
           %small
-            = "Created by: #{my_process.user}"            
+            = "Created by: #{my_process.user}"
   .col-sm-8
-    = link_to '#', {"data-target" => "#my_process-modal-#{@my_process.id}", "data-toggle" => "modal", :type => "button", class: 'btn btn-xs btn-default pull-right'} do
-      %i.glyphicon.glyphicon-pencil
-      Edit
+    .actions.pull-right
+      = link_to '#', {"data-target" => "#my_process-modal-#{@my_process.id}", "data-toggle" => "modal", :type => "button", class: 'btn btn-xs btn-default'} do
+        %i.glyphicon.glyphicon-pencil
+        Edit
+      = link_to my_process_path(@my_process), {class: 'btn btn-xs btn-danger', method: :delete, data: {:confirm => 'Are you sure?'}} do
+        %i.glyphicon.glyphicon-trash
+        Delete
     = render 'shared/form_modal', object: @my_process
     %h1.no-margin= @my_process.name
     .row
@@ -38,11 +42,11 @@
                 %h3.no-margin= task.name
               %p= "Responsible: #{task.responsible_user || '-'}"
               .waitings.mb-md
-                Waiting for: 
+                Waiting for:
                 - task.waitings.each do |waiting|
                   %span.label.label-default.mr-sm{id: "waiting-#{waiting.id}"}
                     = waiting.waiting.name
-                    = link_to '#', class: 'white-link destroy-waiting', data: {id: waiting.id} do 
+                    = link_to '#', class: 'white-link destroy-waiting', data: {id: waiting.id} do
                       %i.glyphicon.glyphicon-remove
               = link_to '+ Wait for', new_waiting_path(task_id: task.id), class: 'btn btn-default btn-xxs'
               .top-right
@@ -53,8 +57,8 @@
                   %i.glyphicon.glyphicon-trash
               .clearfix
 
-                  
-        /= link_to '+ Add task', new_task_path(my_process_id: @my_process.id), class: 'btn btn-primary'        
+
+        /= link_to '+ Add task', new_task_path(my_process_id: @my_process.id), class: 'btn btn-primary'
         %h2 Workflow
         - @my_process.tasks.order("assigned_start ASC").each do |task|
           %p= task.to_s.html_safe

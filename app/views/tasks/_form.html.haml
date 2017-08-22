@@ -5,6 +5,7 @@
         .col-xs-12.col-md-6
           = f.input :name
           = f.input :address
+          = f.input :link
           = f.association :my_process, as: :hidden
           = f.input :description, input_html: {class: 'width-100', style: 'height: 77px'}
         .col-xs-12.col-md-6

@@ -9,8 +9,11 @@
 
     <% locations.each do |location| %>
       new_marker = new google.maps.Marker({
-        position: {lat: parseFloat("<%= location[:lat] %>"), lng: parseFloat("<%= location[:lng] %>")},
+        position: {
+          lat: parseFloat("<%= location[:lat] %>"),
+          lng: parseFloat("<%= location[:lng] %>")},
         map: map,
+        label: "<%= location[:title] %>",
         title: "<%= location[:title] %>"
       });
       new_marker.addListener('click', function() {
@@ -73,7 +76,7 @@
         form = $('#new_task_0')
         task_address_input = $('#new_task_0').find('#task_address');
         task_address_input.val(address);
-        
+
         new_marker.addListener('click', function() {
           $('#add-task').click();
         });

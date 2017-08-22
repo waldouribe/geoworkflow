@@ -17,8 +17,10 @@ class MyProcessesController < ApplicationController
     @my_processes = MyProcess.visibles_for(current_user).order('created_at DESC')
     if current_user.role == 'worker'
       render :show_worker
-    else
+    elsif current_user.role == 'admin'
       render :show_admin
+    else
+      render text: 'An admin must approve you'
     end
   end
 

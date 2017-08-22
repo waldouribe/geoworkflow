@@ -35,13 +35,14 @@ ActiveRecord::Schema.define(version: 20170617184006) do
     t.string   "name"
     t.string   "hashtag"
     t.string   "address"
+    t.string   "status",          default: "active"
     t.float    "latitude"
     t.float    "longitude"
     t.datetime "starts_at"
     t.datetime "started_at"
     t.datetime "ended_at"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "my_processes", ["process_type_id"], name: "index_my_processes_on_process_type_id", using: :btree
@@ -89,6 +90,7 @@ ActiveRecord::Schema.define(version: 20170617184006) do
     t.integer  "my_process_id"
     t.integer  "responsible_user_id"
     t.string   "address"
+    t.string   "link"
     t.string   "name"
     t.integer  "priority"
     t.text     "description"

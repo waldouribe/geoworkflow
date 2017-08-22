@@ -34,6 +34,9 @@
           = render 'shared/form_modal', object: task
         .timeline.mt-lg
           = render 'timeline/timeline', tasks: @my_process.tasks
+          .mt-md
+            .can-be-done.inline-block.mr-md Can be done
+            .cannot-be-done.inline-block.mr-md In progress or waiting for other tasks to end
         .hidden
           %h2 Tasks
           - @my_process.tasks.order("assigned_start ASC").each do |task|

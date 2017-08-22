@@ -11,6 +11,10 @@
     .row
       .col-xs-12
         = render 'my_processes/work_to_do'
+        .mt-md
+          .can-be-done.inline-block.mr-md Can be done
+          .in-progress.inline-block.mr-md In progress
+          .cannot-be-done.inline-block.mr-md Ended / Waiting other tasks
     .row.mt-lg
       .col-xs-12
         = render :partial => 'google_maps/map', :locals => {:locations => task_locations(@my_process.tasks.visibles_for(current_user)), :center => @my_process.tasks_center}

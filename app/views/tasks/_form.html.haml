@@ -26,6 +26,14 @@
       %tr
         %td End
         %td= "#{task.actual_end || '-'}"
+      %tr
+        %td Description
+        %td= task.description
+      %tr
+        %td Link
+        %td
+          - if task.link
+            = link_to task.link, task.link
     = link_to 'Close', task.my_process, class: 'btn btn-default'
     - if task.actual_start.present?
       = link_to 'End task', finish_task_path(task), class: "btn btn-primary pull-right #{'disabled' if task.actual_end.present?}"

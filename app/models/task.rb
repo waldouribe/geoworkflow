@@ -90,6 +90,18 @@ class Task < ActiveRecord::Base
     end
   end
 
+  def human_status
+    case self.status
+    when 'not-started'
+      return 'Waiting'
+    when 'ended'
+      return 'Ended'
+    when 'in-progess'
+      return 'In progress'
+    end
+
+  end
+
   def to_s
     prefix = "<b>#{responsible_user || '@ ?'}</b> <small>must </small><b>#{name}</b> <small>at</small> <b>#{address}</b>"
     waiting_for = waiting_for_tasks.any? ? " <small>when</small> <b>#{waiting_for_tasks.map{|task| task.name}.join(', ')}</b> <small>finishes</small>" : ''
@@ -102,14 +114,14 @@ class Task < ActiveRecord::Base
 
 
   def location
-    return {lat: latitude, lng: longitude, title: "#{name} at #{address}", task_id: id}
+    return {lat: latitude, lng: longitude, title: "#{name}", task_id: id}
   end
 
   def waitings_to_s
     if waiting_for_tasks.any?
       names = waiting_for_tasks.map{ |task| task.name }
       pluralized_names = (names.length >= 2) ?  ": [#{names.join(', ')}]" : " #{names.first}"
-      ", when #{pluralized_names} finishes"
+      ", when #{pluralized_names} finishes Hello"
     end
   end
 

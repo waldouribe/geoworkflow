@@ -6,6 +6,7 @@ class CreateMyProcesses < ActiveRecord::Migration
       t.string :name
       t.string :hashtag
       t.string :address
+      t.string :status, default: 'active'
       t.float :latitude
       t.float :longitude
       t.datetime :starts_at

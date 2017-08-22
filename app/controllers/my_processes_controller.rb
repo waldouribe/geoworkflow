@@ -1,5 +1,5 @@
 class MyProcessesController < ApplicationController
-  before_action :set_my_process, only: [:create_tasks, :new_tasks, :show, :edit, :update, :destroy, :success]
+  before_action :set_my_process, only: [:create_tasks, :new_tasks, :show, :edit, :update, :destroy, :success, :finish]
 
   def index
     @my_processes = MyProcess.visibles_for(current_user).order('created_at DESC')
@@ -11,6 +11,12 @@ class MyProcessesController < ApplicationController
   end
 
   def success
+  end
+
+  def finish
+    @my_process.update_attribute :status, 'finished'
+    Message.create(sender: current_user, message: "##{@my_process.hashtag} ended")
+    redirect_to @my_process, notice: 'Process finished. Twitter message sent. You can still edit this process'
   end
 
   def show

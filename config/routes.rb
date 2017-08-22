@@ -14,11 +14,12 @@ Rails.application.routes.draw do
       get :finish
     end
   end
-  resources :my_processes do 
-    member do 
+  resources :my_processes do
+    member do
       get :success
       get :new_tasks
       patch :create_tasks
+      patch :finish
     end
   end
   resources :process_types
@@ -32,6 +33,6 @@ Rails.application.routes.draw do
   get 'signout', to: 'sessions#destroy', as: 'signout'
 
 
-  # Tests routes, can be deleted 
+  # Tests routes, can be deleted
   get '/test', to: 'tests#index'
 end

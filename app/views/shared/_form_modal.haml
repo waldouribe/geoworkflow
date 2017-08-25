@@ -5,6 +5,10 @@
       .modal-header
         %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
           %span{"aria-hidden" => "true"} ×
-        %h4#myModalLabel.modal-title= "#{object.class.to_s}"
+        - if object_name == 'Task'
+          = link_to object, class: 'btn btn-xs btn-danger', style: 'margin-right: 5px', method: :delete, data: { confirm: 'Are you sure?' } do
+            %i.glyphicon.glyphicon-trash
+            Delete
+        %h4#myModalLabel.modal-title.inline-block= "#{object.class.to_s}"
       .modal-body
         = render "#{object_name.underscore.pluralize}/form", "#{object_name.underscore}".to_sym => object

@@ -13,7 +13,5 @@
         %button.close{"data-dismiss" => "alert"} &times;
         %strong= value.html_safe
     .container
-      .row-fluid
-        .col-xs-12
-          = yield
+      = yield
     .footer

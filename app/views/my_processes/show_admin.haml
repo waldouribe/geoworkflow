@@ -37,7 +37,12 @@
           = link_to 'edit task', '#', {"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => "edit-task-#{task.id}"}
           = render 'shared/form_modal', object: task
         .timeline.mt-lg
-          = render 'timeline/timeline', tasks: @my_process.tasks
+          .mb-md
+            = link_to '.', class: 'btn btn-primary btn-xs pull-right' do
+              %i.glyphicon.glyphicon-refresh
+              Refresh
+            .clearfix
+          = render 'timeline/timeline', tasks: @my_process.tasks, id: 'visualization'
           .mt-md
             .can-be-done.inline-block.mr-md Can be done
             .cannot-be-done.inline-block.mr-md In progress or waiting for other tasks to end
@@ -63,9 +68,6 @@
                 = link_to task, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-default btn-xs' do
                   %i.glyphicon.glyphicon-trash
               .clearfix
-
-
-        /= link_to '+ Add task', new_task_path(my_process_id: @my_process.id), class: 'btn btn-primary'
         %h2 Workflow
         - @my_process.tasks.order("assigned_start ASC").each do |task|
           %p= task.to_s.html_safe

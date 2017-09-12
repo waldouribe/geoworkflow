@@ -7,15 +7,17 @@
       zoom: 13
     });
 
+    var markers = [];
     <% locations.each do |location| %>
       new_marker = new google.maps.Marker({
         position: {
           lat: parseFloat("<%= location[:lat] %>"),
           lng: parseFloat("<%= location[:lng] %>")},
         map: map,
-        label: "<%= location[:title] %>",
+        label: "<%= location[:task_id] %>",
         title: "<%= location[:title] %>"
       });
+      markers.push(new_marker);
       new_marker.addListener('click', function() {
         $("#edit-task-<%= location[:task_id] %>").click();
       });
@@ -30,6 +32,14 @@
     map.addListener('bounds_changed', function() {
       searchBox.setBounds(map.getBounds());
     });
+
+
+    var bounds = new google.maps.LatLngBounds();
+    for (var i = 0; i < markers.length; i++) {
+      bounds.extend(markers[i].getPosition());
+    }
+
+    map.fitBounds(bounds);
 
     var markers = [];
     // Listen for the event fired when the user selects a prediction and retrieve

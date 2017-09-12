@@ -23,7 +23,7 @@ module ApplicationHelper
         actual_start: task.actual_start,
         actual_end: task.actual_end,
         id: task.id,
-        content: "#{task.name} <br/> Status: #{task.human_status} | Start: #{datetime task.actual_start} | End: #{datetime task.actual_end}".html_safe,
+        content: "(#{task.id}) #{task.name} <br/> Status: #{task.human_status} | Start: #{datetime task.actual_start} | End: #{datetime task.actual_end}".html_safe,
         visible_status: visible_status(task)
       }
     end

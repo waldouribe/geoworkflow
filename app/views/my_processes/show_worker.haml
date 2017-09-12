@@ -24,7 +24,7 @@
           = link_to 'edit task', '#', {"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => "edit-task-#{task.id}"}
           = render 'shared/form_modal', object: task
         .timeline.mt-lg
-          = render 'timeline/timeline', tasks: @my_process.tasks
+          = render 'timeline/timeline', tasks: @my_process.tasks, id: 'visualization'
         .hidden
           %h2 Tasks
           - @my_process.tasks.order("assigned_start ASC").each do |task|

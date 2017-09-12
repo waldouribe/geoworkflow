@@ -8,6 +8,11 @@
           = f.input :link
           = f.association :my_process, as: :hidden
           = f.input :description, input_html: {class: 'width-100', style: 'height: 77px'}
+          %b Waiting for:
+          = f.object.waiting_for_tasks.pluck :name
+          %br
+          %b Tasks waiting:
+          = f.object.tasks_waiting.pluck :name
         .col-xs-12.col-md-6
           = f.input :priority, collection: (1..10).to_a, include_blank: '-- Select priority --'
           = f.association :roles, as: :check_boxes, roles: 'Roles'

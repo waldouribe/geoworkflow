@@ -1,5 +1,5 @@
 <!-- http://visjs.org/docs/timeline/ -->
-<div id="visualization"></div>
+<div id="<%= id %>"></div>
 
 <script type="text/javascript">
   dataSet = []
@@ -15,7 +15,7 @@
     <% end %>
   <% end %>
   // DOM element where the Timeline will be attached
-  var container = document.getElementById('visualization');
+  var container = document.getElementById("<%= id %>");
 
   // Create a DataSet (allows two way data-binding)
   var items = new vis.DataSet(dataSet);
@@ -38,6 +38,5 @@
       <% end %>
     }
   });
-  
-</script>
 
+</script>

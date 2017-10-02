@@ -3,11 +3,11 @@ class SessionsController < ApplicationController
   def create
     user = User.from_omniauth(env["omniauth.auth"])
     sign_in(user)
-    redirect_to root_url
+    redirect_to select_role_path
   end
 
   def destroy
     sign_out(user)
-    redirect_to root_url
+    redirect_to select_role_path
   end
 end

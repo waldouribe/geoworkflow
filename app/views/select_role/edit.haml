@@ -1,0 +1,6 @@
+.center
+  %h1.center-text Choose your role
+  = simple_form_for :select_role, url: '/select_role/update' do |f|
+    = f.input :role, collection: [['Admin', 'admin'], ['Worker', 'worker']], include_blank: false
+    %hr
+    = f.submit 'Start', class: 'btn btn-primary'

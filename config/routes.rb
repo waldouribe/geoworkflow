@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'select_role/edit', as: 'select_role'
+  post 'select_role/update'
+
   resources :roles
   root to: "landing#index"
   get 'landing/index'

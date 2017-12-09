@@ -4,7 +4,7 @@ class MyProcess < ActiveRecord::Base
 
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
-  
+
   has_many :tasks, dependent: :destroy
   has_many :messages, dependent: :destroy
 
@@ -32,13 +32,14 @@ class MyProcess < ActiveRecord::Base
     return tasks.map{|t| t.location }
   end
 
+
   def tasks_center
     geolocated_tasks = tasks.where("latitude IS NOT NULL")
     lat_sum = geolocated_tasks.map{ |t| t.latitude }.inject(:+)
     lng_sum = geolocated_tasks.map{ |t| t.longitude }.inject(:+)
-    
+
     if lat_sum.nil?
-      
+
       return {lat: -33.4378305, lng: -70.65044920000003}
     else
       return {lat: lat_sum/geolocated_tasks.count, lng: lng_sum/geolocated_tasks.count}

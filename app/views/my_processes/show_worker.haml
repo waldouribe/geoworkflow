@@ -17,7 +17,11 @@
           .cannot-be-done.inline-block.mr-md Ended / Waiting other tasks
     .row.mt-lg
       .col-xs-12
-        = render :partial => 'google_maps/map', :locals => {:locations => task_locations(@my_process.tasks.visibles_for(current_user)), :center => @my_process.tasks_center}
+        = render :partial => 'google_maps/map', :locals => {:pins => pins(@my_process.tasks.visibles_for(current_user)), :center => @my_process.tasks_center}
+        - pins(@my_process.tasks).each do |pin|
+          - if(pin[:task_count] > 1)
+            = link_to 'pin', '#', {"data-target" => "#pin-modal-#{pin[:id]}", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => "pin-#{pin[:id]}"}
+            = render 'shared/pin_modal', pin: pin
         = link_to 'add task', '#', {"data-target" => "#task-modal-0", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => 'add-task'}
         = render 'shared/form_modal', object: @my_process.tasks.new(id: 0)
         - @my_process.tasks.each do |task|

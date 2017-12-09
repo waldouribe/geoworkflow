@@ -40,4 +40,31 @@ module ApplicationHelper
   def task_locations(tasks)
     return tasks.map{|t| t.location }
   end
+
+  def pins(tasks)
+    ordered_tasks = tasks.order('address ASC')
+    pins = []
+    current_pin = nil
+
+    ordered_tasks.each_with_index do |task, index|
+      if current_pin and current_pin[:location][:address] == task.address
+        current_pin[:tasks] << task
+        current_pin[:task_count] = current_pin[:task_count] + 1
+        pins[-1] = current_pin
+      else
+        current_pin = {location: {latitude: task.latitude, longitude: task.longitude, address: task.address}, tasks: [task], task_count: 1, id: index}
+        pins << current_pin
+      end
+    end
+
+    pins.each do |pin|
+      if(pin[:task_count] == 1)
+        pin[:title] = pin[:tasks][0].id
+      else
+        pin[:title] = "#{pin[:task_count]} Tasks"
+      end
+    end
+
+    return pins
+  end
 end

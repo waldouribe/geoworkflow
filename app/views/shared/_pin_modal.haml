@@ -1,0 +1,12 @@
+.modal.fade{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1", :id => "pin-modal-#{pin[:id]}"}
+  .modal-dialog{:role => "document"}
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+        %h4#myModalLabel.modal-title.inline-block= "#{pin[:task_count]} Tasks"
+      .modal-body
+        %ul
+          - pin[:tasks].each do |task|
+            %li= link_to task.name, '#', {"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button", 'id' => "edit-task-#{task.id}"}
+

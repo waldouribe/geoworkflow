@@ -8,18 +8,23 @@
     });
 
     var markers = [];
-    <% locations.each do |location| %>
+    <% pins.each do |pin| %>
       new_marker = new google.maps.Marker({
         position: {
-          lat: parseFloat("<%= location[:lat] %>"),
-          lng: parseFloat("<%= location[:lng] %>")},
+          lat: parseFloat("<%= pin[:location][:latitude] %>"),
+          lng: parseFloat("<%= pin[:location][:longitude] %>")},
         map: map,
-        label: "<%= location[:task_id] %>",
-        title: "<%= location[:title] %>"
+        label: "<%= pin[:title] %>",
+        title: "<%= pin[:location][:address] %>"
       });
       markers.push(new_marker);
       new_marker.addListener('click', function() {
-        $("#edit-task-<%= location[:task_id] %>").click();
+        if("<%= pin[:task_count] %>" == "1") {
+          $("#edit-task-<%= pin[:tasks][0].id %>").click();
+        }
+        else {
+          $("#pin-<%= pin[:id] %>").click();
+        }
       });
     <% end %>
 

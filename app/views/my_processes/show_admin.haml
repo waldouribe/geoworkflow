@@ -30,9 +30,13 @@
         = link_to "##{@my_process.hashtag}", @my_process.twitter_status_url, target: '_blank'
     .row.mt-lg
       .col-xs-12
-        = render :partial => 'google_maps/map_with_searchbox', :locals => {:locations => @my_process.tasks_locations, :center => @my_process.tasks_center}
+        = render :partial => 'google_maps/map_with_searchbox', :locals => {:pins => pins(@my_process.tasks), :center => @my_process.tasks_center}
         = link_to 'add task', '#', {"data-target" => "#task-modal-0", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => 'add-task'}
         = render 'shared/form_modal', object: @my_process.tasks.new(id: 0)
+        - pins(@my_process.tasks).each do |pin|
+          - if(pin[:task_count] > 1)
+            = link_to 'pin', '#', {"data-target" => "#pin-modal-#{pin[:id]}", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => "pin-#{pin[:id]}"}
+            = render 'shared/pin_modal', pin: pin
         - @my_process.tasks.each do |task|
           = link_to 'edit task', '#', {"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => "edit-task-#{task.id}"}
           = render 'shared/form_modal', object: task

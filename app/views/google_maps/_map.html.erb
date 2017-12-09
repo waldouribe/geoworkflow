@@ -6,15 +6,23 @@
       zoom: 13
     });
 
-    <% locations.each do |location| %>
+    var markers = [];
+
+    <% pins.each do |pin| %>
       new_marker = new google.maps.Marker({
-        position: {lat: parseFloat("<%= location[:lat] %>"), lng: parseFloat("<%= location[:lng] %>")},
+        position: {lat: parseFloat("<%= pin[:location][:latitude] %>"), lng: parseFloat("<%= pin[:location][:longitude] %>")},
         map: map,
-        label: "<%= location[:title] %>",
-        title: "<%= location[:title] %>"
+        label: "<%= pin[:title] %>",
+        title: "<%= pin[:title] %>"
       });
+      markers.push(new_marker);
       new_marker.addListener('click', function() {
-        $("#edit-task-<%= location[:task_id] %>").click();
+        if("<%= pin[:task_count] %>" == "1") {
+          $("#edit-task-<%= pin[:tasks][0].id %>").click();
+        }
+        else {
+          $("#pin-<%= pin[:id] %>").click();
+        }
       });
     <% end %>
 
@@ -22,7 +30,12 @@
     var input = document.getElementById('pac-input');
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-    var markers = [];
+    var bounds = new google.maps.LatLngBounds();
+    for (var i = 0; i < markers.length; i++) {
+      bounds.extend(markers[i].getPosition());
+    }
+
+    map.fitBounds(bounds);
   }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQLHznYx6UKpxcAAsWKXc2vMyL_TRRV6g&callback=initMap&libraries=places&callback=initAutocomplete" defer></script>

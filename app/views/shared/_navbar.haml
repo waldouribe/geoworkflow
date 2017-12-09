@@ -13,8 +13,10 @@
           %li
             = link_to new_my_process_path do
               + New process
+        - if can? :create, MyProcess and user_signed_in?
+            = link_to 'Workers', '#'
         - if can? :manage, Role and user_signed_in?
-          %li 
+          %li
             = link_to 'Roles', roles_path
         - if can? :read, User
           %li
@@ -27,7 +29,7 @@
           %li
             = link_to current_user.name, 'javascript: return'
           %li
-            = link_to destroy_user_session_path, method: :delete do 
+            = link_to destroy_user_session_path, method: :delete do
               %i.glyphicon.glyphicon-off
         - else
           %li

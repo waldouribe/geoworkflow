@@ -15,10 +15,10 @@ class Task < ActiveRecord::Base
   has_and_belongs_to_many :roles
 
   geocoded_by :address
-  after_validation :geocode, if: :address_changed?
+  before_validation :geocode, if: :address_changed?
   before_create :assign_start_and_end
 
-  validates :name, presence: true
+  validates :name, :latitude, :longitude, presence: true
 
   scope :sorted_by_assigned_start, -> { all.sort {|t1, t2| t1.assigned_start <=> t2.assigned_start} }
 

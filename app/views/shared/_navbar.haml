@@ -14,7 +14,7 @@
             = link_to new_my_process_path do
               + New process
         - if can? :create, MyProcess and user_signed_in?
-            = link_to 'Workers', '#'
+          = link_to 'Workers', '#'
         - if can? :manage, Role and user_signed_in?
           %li
             = link_to 'Roles', roles_path

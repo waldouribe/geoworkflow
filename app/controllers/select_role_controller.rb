@@ -4,7 +4,7 @@ class SelectRoleController < ApplicationController
 
   def update
     if current_user.role != 'not-admited'
-      current_user.ip = request.remote_ip
+      current_user.ip = request.ip
       current_user.role = params[:select_role][:role]
       current_user.save
     end

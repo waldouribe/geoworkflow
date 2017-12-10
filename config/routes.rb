@@ -38,4 +38,5 @@ Rails.application.routes.draw do
 
   # Tests routes, can be deleted
   get '/test', to: 'tests#index'
+  get '/workers', to: 'workers#index', as: 'workers'
 end

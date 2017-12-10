@@ -1,11 +1,15 @@
 class User < ActiveRecord::Base
   cattr_reader :ROLES
   @@ROLES = ['admin', 'worker', 'not-admitted']
-  
+
   devise :database_authenticatable, :registerable, :rememberable, :trackable
   has_many :process_types, dependent: :destroy
+  has_many :tasks, class_name: 'Task', foreign_key: 'responsible_user_id'
 
   has_and_belongs_to_many :roles
+
+  geocoded_by :ip
+  after_validation :geocode
 
   def to_s
     return "@#{username}"
@@ -14,7 +18,7 @@ class User < ActiveRecord::Base
   def self.from_omniauth(auth)
     uid = auth['uid']
     name = auth['name']
-    provider = auth['provider']    
+    provider = auth['provider']
     user =  where(uid: uid, provider: provider).first || create_from_omniauth(auth)
     user.update_attributes(token: auth['credentials']['token'], secret: auth['credentials']['secret'])
 

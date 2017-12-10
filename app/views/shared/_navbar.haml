@@ -13,8 +13,6 @@
           %li
             = link_to new_my_process_path do
               + New process
-        - if can? :create, MyProcess and user_signed_in?
-          = link_to 'Workers', '#'
         - if can? :manage, Role and user_signed_in?
           %li
             = link_to 'Roles', roles_path
@@ -24,6 +22,9 @@
         - if can? :index, MyProcess and user_signed_in?
           %li
             = link_to 'Processes', my_processes_path
+        - if can? :create, MyProcess and user_signed_in?
+          %li
+            = link_to 'Workers', workers_path
       %ul.nav.navbar-nav.navbar-right
         - if user_signed_in?
           %li

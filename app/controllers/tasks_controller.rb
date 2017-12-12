@@ -67,6 +67,8 @@ class TasksController < ApplicationController
       params.require(:task).permit(
         :name,
         :my_process_id,
+        :work_link,
+        :work_description,
         :priority,
         :user_id,
         :address,

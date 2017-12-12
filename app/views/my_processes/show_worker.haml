@@ -28,6 +28,11 @@
           = link_to 'edit task', '#', {"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => "edit-task-#{task.id}"}
           = render 'shared/form_modal', object: task
         .timeline.mt-lg
+          .mb-md
+            = link_to '.', class: 'btn btn-primary btn-xs pull-right' do
+              %i.glyphicon.glyphicon-refresh
+              Refresh
+            .clearfix
           = render 'timeline/timeline', tasks: @my_process.tasks, id: 'visualization'
         .hidden
           %h2 Tasks

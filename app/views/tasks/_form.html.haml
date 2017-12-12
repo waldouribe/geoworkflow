@@ -24,7 +24,7 @@
       .clearfix
 - else
   = simple_form_for task do |f|
-    %table.table
+    %table.table{style: 'margin-bottom: 0'}
       %tr
         %td Start
         %td= "#{task.actual_start || '-'}"
@@ -39,6 +39,15 @@
         %td
           - if task.link
             = link_to task.link, task.link
+      %tr
+        %td Work Link
+        %td= f.input :work_link, label: false
+      %tr
+        %td Work Description
+        %td= f.input :work_description, label: false, input_html: {style: 'width: 100%'}
+    = f.submit class: 'btn btn-default pull-right'
+    .clearfix
+    %hr
     = link_to 'Close', task.my_process, class: 'btn btn-default'
     - if task.actual_start.present?
       = link_to 'End task', finish_task_path(task), class: "btn btn-primary pull-right #{'disabled' if task.actual_end.present?}"

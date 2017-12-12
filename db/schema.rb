@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171210224443) do
+ActiveRecord::Schema.define(version: 20171211191429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,8 @@ ActiveRecord::Schema.define(version: 20171210224443) do
     t.datetime "actual_end"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.string   "work_link"
+    t.text     "work_description"
   end
 
   add_index "tasks", ["my_process_id"], name: "index_tasks_on_my_process_id", using: :btree

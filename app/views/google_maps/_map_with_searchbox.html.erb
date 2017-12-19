@@ -20,7 +20,7 @@
       markers.push(new_marker);
       new_marker.addListener('click', function() {
         if("<%= pin[:task_count] %>" == "1") {
-          $("#edit-task-<%= pin[:tasks][0].id %>").click();
+          showTaskForm("<%= pin[:tasks][0].id %>");
         }
         else {
           $("#pin-<%= pin[:id] %>").click();

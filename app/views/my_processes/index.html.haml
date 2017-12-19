@@ -1,15 +1,25 @@
-%h1 Listing Processes
-%table.table
-  %tr
-    %th ID
-    %th Process
-    %th Hashtag
-    %th Location
-    %th Status
-  - @my_processes.each do |my_process|
-    %tr
-      %td= my_process.id
-      %td= "##{my_process.name}"
-      %td= "##{my_process.hashtag}"
-      %td= my_process.address
-      %td= link_to "##{my_process.hashtag}", my_process.twitter_status_url, target: '_blank'
+%h1 Processes
+.row
+  .col-xs-12
+    .list-group
+      - @my_processes.each do |my_process|
+        = link_to my_process, class: "list-group-item #{'active' if my_process == @my_process}" do
+          = my_process.name
+          - if my_process.status == 'finished'
+            %i.small (finished)
+          %br
+          %small
+            = "Created by: #{my_process.user}"
+    = will_paginate @my_processes
+-# %table.table
+-#   %tr
+-#     %th ID
+-#     %th Process
+-#     %th Hashtag
+-#   - @my_processes.each do |my_process|
+-#     %tr
+-#       %td= link_to my_process.id, my_process
+-#       %td= link_to my_process.name, my_process
+-#       %td= link_to my_process.hashtag, my_process
+
+

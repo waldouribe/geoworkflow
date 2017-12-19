@@ -29,11 +29,11 @@
     task_id = event['item'];
     if(task_id != null) {
       <% if current_user.role?(:admin) %>
-        $("#edit-task-"+task_id).click();
+        showTaskForm(task_id);
       <% else %>
         target = $(event['event']['firstTarget']);
         if(target.parents('.blocked').length == 0) {
-          $("#edit-task-"+task_id).click();
+          showTaskForm(task_id);
         }
       <% end %>
     }

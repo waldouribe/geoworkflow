@@ -3,10 +3,9 @@
     .modal-content
       .modal-header
         %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"} ×
+          %span{"aria-hidden" => "true", "id" => "close-multiple-tasks"} ×
         %h4#myModalLabel.modal-title.inline-block= "#{pin[:task_count]} Tasks"
       .modal-body
         %ul
           - pin[:tasks].each do |task|
-            %li= link_to task.name, '#', {"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button", 'id' => "edit-task-#{task.id}"}
-
+            %li= link_to "#{task.id}) #{task.name}", "javascript: showTaskForm(#{task.id });$('#close-multiple-tasks').click();"

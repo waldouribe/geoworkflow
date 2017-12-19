@@ -1,13 +1,16 @@
 - if current_user.role? :admin
   = simple_form_for task do |f|
     .form-inputs
+      %h3= "#{f.object.id}) #{f.object.name}"
       .row
         .col-xs-12.col-md-6
           = f.input :name
           = f.input :address
-          = f.input :link
+          = f.input :link, label: 'Admin Link'
+          = f.input :description, input_html: {class: 'width-100', style: 'height: 77px'}, label: 'Admin Description'
+          = f.input :work_link
+          = f.input :work_description, input_html: {class: 'width-100', style: 'height: 77px'}
           = f.association :my_process, as: :hidden
-          = f.input :description, input_html: {class: 'width-100', style: 'height: 77px'}
           %b Waiting for:
           = f.object.waiting_for_tasks.pluck :name
           %br
@@ -19,11 +22,12 @@
           = f.association :waiting_for_tasks, as: :check_boxes, collection: task.can_wait_for
     %hr
     .form-actions
-      = link_to 'Close', task.my_process, class: 'btn btn-default'
+      = link_to 'Close', '#', class: 'btn btn-default close-task-form'
       = f.button :submit, class: 'btn btn-primary pull-right'
       .clearfix
 - else
   = simple_form_for task do |f|
+    %h3= "#{f.object.id}) #{f.object.name}"
     %table.table{style: 'margin-bottom: 0'}
       %tr
         %td Start
@@ -32,10 +36,10 @@
         %td End
         %td= "#{task.actual_end || '-'}"
       %tr
-        %td Description
+        %td Admin escription
         %td= task.description
       %tr
-        %td Link
+        %td Admin Link
         %td
           - if task.link
             = link_to task.link, task.link
@@ -48,7 +52,7 @@
     = f.submit class: 'btn btn-default pull-right'
     .clearfix
     %hr
-    = link_to 'Close', task.my_process, class: 'btn btn-default'
+    = link_to 'Close', '#', class: 'btn btn-default close-task-form'
     - if task.actual_start.present?
       = link_to 'End task', finish_task_path(task), class: "btn btn-primary pull-right #{'disabled' if task.actual_end.present?}"
     - else

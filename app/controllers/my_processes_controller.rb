@@ -2,12 +2,7 @@ class MyProcessesController < ApplicationController
   before_action :set_my_process, only: [:create_tasks, :new_tasks, :show, :edit, :update, :destroy, :success, :finish]
 
   def index
-    @my_processes = MyProcess.visibles_for(current_user).order('created_at DESC')
-    if @my_processes.any?
-      redirect_to @my_processes.first
-    else
-      render :empty
-    end
+    @my_processes = MyProcess.visibles_for(current_user).paginate(page: params[:page], per_page: 15).order('created_at DESC')
   end
 
   def success
@@ -20,7 +15,6 @@ class MyProcessesController < ApplicationController
   end
 
   def show
-    @my_processes = MyProcess.visibles_for(current_user).order('created_at DESC')
     if current_user.role == 'worker'
       render :show_worker
     elsif current_user.role == 'admin'

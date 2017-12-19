@@ -1,15 +1,9 @@
 .row
-  .col-sm-4
-    .list-group
-      - @my_processes.each do |my_process|
-        = link_to my_process, class: "list-group-item #{'active' if my_process == @my_process}" do
-          = my_process.name
-          - if my_process.status == 'finished'
-            %i.small (finished)
-          %br
-          %small
-            = "Created by: #{my_process.user}"
-  .col-sm-8
+  .col-sm-0#my-process-left-bar
+    - @my_process.tasks.each do |task|
+      .hidden.task-form{id: "task-#{task.id}-form"}
+        = render 'tasks/form', task: task
+  .col-sm-12#my-process-content
     .actions.pull-right
       = link_to '#', {"data-target" => "#my_process-modal-#{@my_process.id}", "data-toggle" => "modal", :type => "button", class: 'btn btn-xs btn-default'} do
         %i.glyphicon.glyphicon-pencil
@@ -37,9 +31,6 @@
           - if(pin[:task_count] > 1)
             = link_to 'pin', '#', {"data-target" => "#pin-modal-#{pin[:id]}", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => "pin-#{pin[:id]}"}
             = render 'shared/pin_modal', pin: pin
-        - @my_process.tasks.each do |task|
-          = link_to 'edit task', '#', {"data-target" => "#task-modal-#{task.id}", "data-toggle" => "modal", :type => "button", 'class' => 'hidden', 'id' => "edit-task-#{task.id}"}
-          = render 'shared/form_modal', object: task
         .timeline.mt-lg
           .mb-md
             = link_to '.', class: 'btn btn-primary btn-xs pull-right' do

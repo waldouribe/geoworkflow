@@ -1,11 +1,13 @@
 - if current_user.role? :admin
   = simple_form_for task do |f|
     .form-inputs
-      %h3= "#{f.object.id}) #{f.object.name}"
+      - if !f.object.new_record?
+        %h3= "#{f.object.id}) #{f.object.name}"
       .row
         .col-xs-12.col-md-6
           = f.input :name
           = f.input :responsible_user, disabled: true, input_html: {class: 'disable'}
+          %label= "Start: #{datetime f.object.actual_start} / End: #{datetime f.object.actual_end}"
           = f.input :address
           = f.input :link, label: 'Admin Link'
           = f.input :description, input_html: {class: 'width-100', style: 'height: 77px'}, label: 'Admin Description'

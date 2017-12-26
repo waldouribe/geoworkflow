@@ -13,6 +13,7 @@
         position: {
           lat: parseFloat("<%= pin[:location][:latitude] %>"),
           lng: parseFloat("<%= pin[:location][:longitude] %>")},
+        zIndex: 1,
         map: map,
         label: "<%= pin[:title] %>",
         title: "<%= pin[:location][:address] %>"

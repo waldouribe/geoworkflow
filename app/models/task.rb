@@ -96,7 +96,7 @@ class Task < ActiveRecord::Base
       return 'Waiting'
     when 'ended'
       return 'Ended'
-    when 'in-progess'
+    when 'in-progress'
       return 'In progress'
     end
 

@@ -5,6 +5,7 @@
       .row
         .col-xs-12.col-md-6
           = f.input :name
+          = f.input :responsible_user, disabled: true, input_html: {class: 'disable'}
           = f.input :address
           = f.input :link, label: 'Admin Link'
           = f.input :description, input_html: {class: 'width-100', style: 'height: 77px'}, label: 'Admin Description'

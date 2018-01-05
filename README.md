@@ -20,4 +20,3 @@ Por confirmar
   Highlight
   Frenar scroll del plugin
   Ubicación actual
-

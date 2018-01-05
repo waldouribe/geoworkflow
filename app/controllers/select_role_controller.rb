@@ -6,7 +6,7 @@ class SelectRoleController < ApplicationController
 
   def update
     if current_user.role != 'not-admited'
-      ip = request.remote_ip
+      ip = request.ip
       current_user.ip = ip
       current_user.role = params[:select_role][:role]
       location = Geokit::Geocoders::GoogleGeocoder.geocode(ip)

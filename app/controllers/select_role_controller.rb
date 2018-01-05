@@ -6,12 +6,12 @@ class SelectRoleController < ApplicationController
 
   def update
     if current_user.role != 'not-admited'
-
-      current_user.ip = request.ip
+      ip = request.remote_ip
+      current_user.ip = ip
       current_user.role = params[:select_role][:role]
-      location = IpGeocoder.geocode(request.ip)
+      location = IpGeocoder.geocode(ip)
       puts(location)
-      render text: location;return
+      render text: "#{location}    IP: #{ip}";return
       current_user.save
     end
     render text: request.location.to_yaml;return

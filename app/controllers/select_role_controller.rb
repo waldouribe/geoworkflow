@@ -1,4 +1,6 @@
 class SelectRoleController < ApplicationController
+  include Geokit::Geocoders
+
   def edit
   end
 

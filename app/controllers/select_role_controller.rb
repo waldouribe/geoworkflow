@@ -9,7 +9,7 @@ class SelectRoleController < ApplicationController
       ip = request.remote_ip
       current_user.ip = ip
       current_user.role = params[:select_role][:role]
-      location = IpGeocoder.geocode(ip)
+      location = Geokit::Geocoders::GoogleGeocoder.geocode('190.215.120.173')
       puts(location)
       render text: "#{location}    IP: #{ip}";return
       current_user.save

@@ -17,7 +17,6 @@ class SelectRoleController < ApplicationController
       end
       current_user.save
     end
-    render text: request.location.to_yaml;return
     redirect_to root_path
   end
 end

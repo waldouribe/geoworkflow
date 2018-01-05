@@ -60,8 +60,6 @@ class Task < ActiveRecord::Base
       end
     end
 
-    puts "-----> #{closest.name} #{closest.latitude}, #{closest.longitude}, distance: #{min}"
-
     return closest
   end
 

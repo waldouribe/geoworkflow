@@ -9,7 +9,7 @@
 .mt-lg
   - Task.order_by(@my_process.tasks.visibles_for(current_user), order: params[:order], ip: request.ip).each_with_index do |task, index|
     .task-block.vis-item.work-to-do-item{class: "#{visible_status(task)} #{'doable' if task.doable?(current_user)}", data: {'task-id'=>task.id}}
-      = "#{task.id}) #{task.name} #{task.waitings_to_s}"
+      = "#{task.relative_id}) #{task.name} #{task.waitings_to_s}"
       %br
       %small
         = task.address

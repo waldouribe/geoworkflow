@@ -23,7 +23,7 @@ module ApplicationHelper
         actual_start: task.actual_start,
         actual_end: task.actual_end,
         id: task.id,
-        content: "(#{task.id}) #{task.name} <br/> Status: <strong>#{task.human_status} </strong>".html_safe,
+        content: "(#{task.relative_id}) #{task.name} <br/> Status: <strong>#{task.human_status} </strong>".html_safe,
         visible_status: visible_status(task)
       }
     end
@@ -59,7 +59,7 @@ module ApplicationHelper
 
     pins.each do |pin|
       if(pin[:task_count] == 1)
-        pin[:title] = pin[:tasks][0].id
+        pin[:title] = pin[:tasks][0].relative_id
       else
         pin[:title] = "#{pin[:task_count]} Tasks"
       end

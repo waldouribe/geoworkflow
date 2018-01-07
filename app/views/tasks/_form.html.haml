@@ -2,7 +2,7 @@
   = simple_form_for task do |f|
     .form-inputs
       - if !f.object.new_record?
-        %h3= "#{f.object.id}) #{f.object.name}"
+        %h3= "#{f.object.relative_id}) #{f.object.name}"
       .row
         .col-xs-12.col-md-6
           = f.input :name

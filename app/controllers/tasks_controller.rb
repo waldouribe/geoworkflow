@@ -12,6 +12,7 @@ class TasksController < ApplicationController
     message = "##{@task.my_process.hashtag} #{@task.name} started now at #{@task.address}".first(140)
     Message.create(sender: current_user, message: message)
     @task.update_attributes actual_start: DateTime.now, responsible_user_id: current_user.id
+    current_user.update_attributes(latitude: @task.latitude, longitude: @task.longitude)
     redirect_to @task.my_process
   end
 

@@ -18,8 +18,10 @@ jQuery ->
     $('#my-process-left-bar').addClass('hidden')
 
     $('#my-process-left-bar').removeClass('col-sm-4')
+    $('#my-process-left-bar').removeClass('col-xs-12')
     $('#my-process-left-bar').addClass('col-sm-0')
     $('#my-process-left-bar').addClass('hidden')
 
     $('#my-process-content').removeClass('col-sm-8')
-    $('#my-process-content').addClass('col-sm-12')
+    $('#my-process-content').removeClass('col-xs-12')
+    $('#my-process-content').addClass('col-xs-12')

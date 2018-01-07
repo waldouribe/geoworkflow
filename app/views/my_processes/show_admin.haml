@@ -3,7 +3,7 @@
     - @my_process.tasks.each do |task|
       .hidden.task-form{id: "task-#{task.id}-form"}
         = render 'tasks/form', task: task
-  .col-sm-12#my-process-content
+  .col-xs-12#my-process-content
     .actions.pull-right
       = link_to '#', {"data-target" => "#my_process-modal-#{@my_process.id}", "data-toggle" => "modal", :type => "button", class: 'btn btn-xs btn-default'} do
         %i.glyphicon.glyphicon-pencil

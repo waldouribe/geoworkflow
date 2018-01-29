@@ -23,7 +23,7 @@
       = render 'shared/form_modal', object: task
     .timeline.mt-lg
       .mb-md
-        = link_to '.', class: 'btn btn-primary btn-xs pull-right' do
+        = link_to request.original_url, class: 'btn btn-primary btn-xs pull-right' do
           %i.glyphicon.glyphicon-refresh
           Refresh
         .clearfix

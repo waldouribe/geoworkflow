@@ -30,7 +30,7 @@
       .clearfix
 - else
   = simple_form_for task do |f|
-    %h3= "#{f.object.id}) #{f.object.name}"
+    %h3= "#{f.object.relative_id}) #{f.object.name}"
     %table.table{style: 'margin-bottom: 0'}
       %tr
         %td Start

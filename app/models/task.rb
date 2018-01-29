@@ -75,7 +75,7 @@ class Task < ActiveRecord::Base
 
   def relative_id
     sorted = my_process.tasks.sort {|t1, t2| t1.assigned_start <=> t2.assigned_start}
-    sorted.map(&:id).index(self.id)+1
+    sorted.map(&:id).index(self.id).to_i+1
   end
 
   def status
@@ -112,7 +112,7 @@ class Task < ActiveRecord::Base
 
 
   def location
-    return {lat: latitude, lng: longitude, title: "#{name}", task_id: id,  relative_id: seld.relative_id}
+    return {lat: latitude, lng: longitude, title: "#{name}", task_id: id,  relative_id: self.relative_id}
   end
 
   def waitings_to_s
